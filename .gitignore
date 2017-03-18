@@ -1,0 +1,7 @@
+*.log
+*.nlo
+*.out
+*.aux
+*.toc
+report.pdf
+
