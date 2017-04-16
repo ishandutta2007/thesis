@@ -3,5 +3,6 @@
 *.out
 *.aux
 *.toc
+*.blg
 report.pdf
 

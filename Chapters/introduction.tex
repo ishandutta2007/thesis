@@ -5,7 +5,13 @@ This text is saved by the user's browser for some defined period of time before 
 It is then sent to the website as part of the HTTP request when they revisit the site.
 Using this system, the website can identify the user upon their return.
 
-When cookies were first created, they were primarily used for remembering stateful information such as the contents of the user's shopping cart on eCommerce websites, or for recording the user's browsing activity such as whether or not they're logged in.
+\begin{figure}[h]
+\caption{Example of a browser cookie}
+\includegraphics[scale=0.8]{cookie-example}
+\centering
+\end{figure}
+
+When cookies were first created, they were primarily used for remembering stateful information such as the contents of the user's shopping cart on eCommerce websites, or for recording the user's browsing activity such as whether or not they're logged in.\cite{deconstructing-code}
 They're also used to allow the website to autofill previously filled in form information.
 Cookies were created for this purpose because HTTP is a stateless protocol, meaning that the web servers aren't required to save status information about every user on the site while they are visiting.
 If the sites do want to retain information about the visitors, using browser cookies is the most common way maintaining state.
