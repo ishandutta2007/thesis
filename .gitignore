@@ -4,5 +4,8 @@
 *.aux
 *.toc
 *.blg
+*.bbl
+*.fdb_latexmk
+.fls
 report.pdf
 
