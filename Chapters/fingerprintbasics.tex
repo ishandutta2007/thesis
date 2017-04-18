@@ -1,3 +1,18 @@
 \chapter{Browser Fingerprinting}
 
-<Insert large amount of text here>
+Browser fingerprinting is a method of identifying users by information about their browser.
+When a user visits a website which employs browser fingerprinting strategies, the website will both passively and actively collect information about the user's browser.
+When the user returns to the site, the browser characteristics can be checked and compared with previous users' fingerprints.
+This way, a match can be found and the user can be uniquely identified.
+
+Some of the information is gained 'passively' as it is sent in the HTTP request.
+The other information is 'actively' gathered through client-side JavaScript, Flash and Java execution.
+
+\subsection{Passively Gained Information}
+
+HTTP requests sent to websites offer a lot of information about the user.
+The browser exposes this data by setting the values of certain request headers.
+The first relevant header is User Agent.
+This is a string which normally details what browser, platform and layout engine are being used, along with the versions of each.
+This is done so that websites can identify interoperability problems more easily \citep{useragent}.
+
