@@ -5,15 +5,15 @@ When a user visits a website which employs browser fingerprinting strategies, th
 When the user returns to the site, the browser characteristics can be checked and compared with previous users' fingerprints \citep{fingerprinting}.
 This way, a match can be found and the user can be uniquely identified.
 
-Some of the information is gained 'passively' as it is sent in the HTTP request.
-The other information is 'actively' gathered through client-side JavaScript, Flash and Java execution.
+Some of the information is gained `passively' as it is sent in the HTTP request.
+The other information is `actively' gathered through client-side JavaScript, Flash and Java execution.
 
 \subsection{Passively Gained Information}
 
 HTTP requests sent to websites offer a lot of information about the user.
 The browser exposes this data by setting the values of certain request headers.
 The first relevant header is User Agent.
-This is a string which normally details what browser, platform and layout engine are being used, along with the versions of each.
+This is a string which normally details what browser, platform and layout engine are being used, along with the versions of each (see Figure 2.1 for an example).
 This is done so that websites can identify interoperability problems more easily \citep{useragent}.
 The user agent carries approximately 10.5 bits of identifying information on average, exposing quite a lot of information to visited websites \citep{useragententropy}.
 
@@ -24,5 +24,13 @@ The user agent carries approximately 10.5 bits of identifying information on ave
 \end{figure}
 
 The next relevant headers are the HTTP\_\_ACCEPT headers.
-These describe what MIMETYPE the browser is looking for, what encodings it'll accept and what languages are desired.
+These describe what MIMETYPE the browser is looking for, what compression formats it'll accept and what languages are desired.
+
+\begin{figure}[h]
+\caption{Example of HTTP\_\_ACCEPT headers}
+\includegraphics[scale=0.8]{http-accept-example}
+\centering
+\end{figure}
+
+
 

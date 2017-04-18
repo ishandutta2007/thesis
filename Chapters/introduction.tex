@@ -1,7 +1,7 @@
 \chapter{Introduction: HTTP Cookies}
 
-Browser cookies are small bits of text sent to a client when they visit a website for the first time.
-This text is saved by the user's browser for some defined period of time before it expires.
+Browser cookies are small bits of information sent to a client when they visit a website for the first time.
+This cookie is usually saved by the user's browser for some defined period of time before it expires.
 It is then sent to the website as part of the HTTP request when they revisit the site.
 Using this system, the website can identify the user upon their return.
 
@@ -19,7 +19,14 @@ If the sites do want to retain information about the visitors, using browser coo
 It has become standard practice for many websites to use cookies (primarily third party cookies) to track users' browsing habits and interests.
 As users become more privacy aware and browser developers become more involved in protecting their users' privacy, these browser cookies are being disabled or cleared more often than before.
 As the number of users allowing cookies decreases, the effectiveness of the browser cookie decreases from the advertiser's point of view, as they can't track their users over a long period of time before they have to issue them a new cookie and start over from scratch.
-This is especially true for third party cookies which are likely used for a large number of websites.
+This is especially true for third party cookies which are likely used across a large number of websites.
+
+\begin{figure}[h]
+\caption{Example of a third party cookie.
+Here, an advertising company has a banner in two separate websites, allowing them to track the user across the two sites.}
+\includegraphics[scale=0.18]{third-party-cookie}
+\centering
+\end{figure}
 
 The decrease in the effectiveness of the browser cookie is what has driven some companies to find new techniques to identify and track their userbase.
 They sought a more persistent alternative to a browser cookie which the user couldn't clear or disable.
