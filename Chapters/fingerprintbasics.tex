@@ -32,5 +32,21 @@ These describe what MIMETYPE the browser is looking for, what compression format
 \centering
 \end{figure}
 
+As well as the previous headers, the browser will also send the date of the machine, including the timezone.
+This exposes both the timezone that the user is located in, and the time difference between the client machine and the server.
+There's one last header that's commonly used in fingerprinting, the DNT or `Do Not Track' header.
+This header is a binary value which indicates to a website if the user explicitly doesn't want to be tracked.
 
+All of this information is sent by default, exposing a huge amount of data about the user's browser already.
+Furthermore, much of this data is important for user experience on a lot of websites, such as websites with downloads for different operating systems checking the User Agent string to show a different download for different operating systems.
+This means that spoofing the data to protect the user's privacy comes with a common tradeoff, user experience vs.\ privacy.
+
+\subsection{Actively Gained Information}
+
+As well as the information that's sent to websites by the browser by default, there's also a huge amount of information that can be gleamed through client-side execution of JavaScript, Flash and Java.
+One of the most reliable methods of mitigating fingerprinting is simply disabling all three of these, however most popular websites use JavaScript in some capacity and will either break the website entirely or result in a poor user experience \citep{disable-js}.
+
+\subsubsection{Information Gained Using JavaScript}
+
+Lots.
 
