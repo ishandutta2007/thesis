@@ -48,5 +48,24 @@ One of the most reliable methods of mitigating fingerprinting is simply disablin
 
 \subsubsection{Information Gained Using JavaScript}
 
-Lots.
+JavaScript exposes a huge amount of information to fingerprinters.
+A lot of the information is stored in the \texttt{window.navigator} JavaScript object which is available to any website that a user visits with JavaScript enabled.
+This information is explained in Table 2.1.
+
+\begin{table}[h]
+    \centering
+    \begin{tabular}{| l | r |}
+        \hline
+        \textbf{Navigator Property} & \textbf{Description} \\ \hline
+        \texttt{appVersion} & {Returns the version of the browser} \\ \hline
+        \texttt{cookieEnabled} & {Returns whether or not cookies are enabled} \\ \hline
+        \texttt{javaEnabled()} & {Returns whether or not Java is enabled} \\ \hline
+        \texttt{language} & {Returns the language of the browser} \\ \hline
+        \texttt{platform} & {Returns the browser platform / operating system} \\ \hline
+        \texttt{product} & {Returns the product name of the browser engine} \\ \hline
+        \texttt{userAgent} & {Returns the User Agent of the browser} \\
+        \hline
+    \end{tabular}
+    \caption{Table explaining what the relevant \texttt{window.navigator} properties reveal}
+\end{table}
 
