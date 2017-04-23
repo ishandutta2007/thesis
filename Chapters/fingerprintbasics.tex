@@ -13,7 +13,7 @@ The other information is `actively' gathered through client-side JavaScript, Fla
 HTTP requests sent to websites offer a lot of information about the user.
 The browser exposes this data by setting the values of certain request headers.
 The first relevant header is User Agent.
-This is a string which normally details what browser, platform and layout engine are being used, along with the versions of each (see Figure 2.1 for an example).
+This is a string which normally details what browser, platform and layout engine are being used, along with the versions of each (see Figure~\ref{fig:useragent-example} for an example).
 This is done so that websites can identify interoperability problems more easily \citep{useragent}.
 The user agent carries approximately 10.5 bits of identifying information on average, exposing quite a lot of information to visited websites \citep{useragententropy}.
 
@@ -21,6 +21,7 @@ The user agent carries approximately 10.5 bits of identifying information on ave
 \caption{Example of a user agent}
 \includegraphics[scale=0.8]{useragent-example}
 \centering
+\label{fig:useragent-example}
 \end{figure}
 
 The next relevant headers are the HTTP\_\_ACCEPT headers.
@@ -50,22 +51,40 @@ One of the most reliable methods of mitigating fingerprinting is simply disablin
 
 JavaScript exposes a huge amount of information to fingerprinters.
 A lot of the information is stored in the \texttt{window.navigator} JavaScript object which is available to any website that a user visits with JavaScript enabled.
-This information is explained in Table 2.1.
+This information is explained in Table~\ref{tab:navigator-props}.
 
 \begin{table}[h]
-    \centering
-    \begin{tabular}{| l | r |}
-        \hline
-        \textbf{Navigator Property} & \textbf{Description} \\ \hline
-        \texttt{appVersion} & {Returns the version of the browser} \\ \hline
-        \texttt{cookieEnabled} & {Returns whether or not cookies are enabled} \\ \hline
-        \texttt{javaEnabled()} & {Returns whether or not Java is enabled} \\ \hline
-        \texttt{language} & {Returns the language of the browser} \\ \hline
-        \texttt{platform} & {Returns the browser platform / operating system} \\ \hline
-        \texttt{product} & {Returns the product name of the browser engine} \\ \hline
-        \texttt{userAgent} & {Returns the User Agent of the browser} \\
-        \hline
-    \end{tabular}
-    \caption{Table explaining what the relevant \texttt{window.navigator} properties reveal}
+\centering
+\begin{tabular}{| l | r |}
+    \hline
+    \textbf{Navigator Property} & \textbf{Description} \\ \hline
+    \texttt{appVersion} & {Returns the version of the browser} \\ \hline
+    \texttt{cookieEnabled} & {Returns whether or not cookies are enabled} \\ \hline
+    \texttt{javaEnabled()} & {Returns whether or not Java is enabled} \\ \hline
+    \texttt{language} & {Returns the language of the browser} \\ \hline
+    \texttt{platform} & {Returns the browser platform / operating system} \\ \hline
+    \texttt{product} & {Returns the product name of the browser engine} \\ \hline
+    \texttt{userAgent} & {Returns the User Agent of the browser} \\
+    \hline
+\end{tabular}
+\caption{Table explaining what the relevant \texttt{window.navigator} properties reveal}
+\label{tab:navigator-props}
 \end{table}
+
+Whereas these characteristics are convenient to access with JavaScript and readily supplied by the browser, there's also a huge amount of additional information which can be retrieved.
+The first of which is detecting what fonts the user has installed.
+
+Browsers and JavaScript don't supply any functions for retrieving the full list of fonts that the user has installed.
+There is however a method that allows the visited website to detect what fonts are installed by querying a large number of fonts one-by-one.
+The method works by creating a HTML \texttt{<span>} element and set the font to a font known to be installed.
+After this is done, JavaScript is used to change the CSS of the text so that the font family is different.
+The size of the \texttt{<span>} element will be different before and after the change if the probed font is installed, illustrated in Figure~\ref{fig:font-change}.
+A huge list of fonts can be tested for using this method, bypassing the inherent security feature of browsers not allowing full font enumeration.
+
+\begin{figure}[h]
+\caption{Showing the difference in \texttt{<span>} width when the font is changed}
+\includegraphics[scale=0.8]{font-change}
+\centering
+\label{fig:font-change}
+\end{figure}
 
