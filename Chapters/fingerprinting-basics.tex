@@ -76,6 +76,7 @@ The most significant of these properties in terms of bits of entropy exposed is 
 It returns the list of plugins installed, usually paired with the version.
 However, this list is not fully enumerable, it can't be read as one would expect.
 To check if a user has a plugin installed, the fingerprinter must query the list with a specific plugin.
+In addition to the characteristics available through the \texttt{window.navigator}, there are other objects with information available in them, such as the \texttt{screen} object which contains the height and width of the user's display.
 
 Whereas these characteristics are convenient to access with JavaScript and readily supplied by the browser, there's also a huge amount of additional information which can be retrieved.
 The first of which is detecting what fonts the user has installed.
@@ -133,4 +134,12 @@ This list of fonts can also be retrieved using a Java Applet.
 Flash also exposes platform information, showing more information than the \texttt{window.navigator} JavaScript object as it shows the major and minor versions of the operating system instead of just the name and architecture.
 In addition, Flash reveals the platform's language which isn't available through common browser APIs (Internet Explorer being the exception).
 
-- Effectiveness
+\subsection{Effectiveness of Browser Fingerprinting}
+
+Given all of this information, one has to wonder just how useful it is in identifying browsers and consequently users.
+According to a study done by EFF using their Panopticlick fingerprinting tool, around 90\% of users who used the site to find their own fingerprint are unique \citep{browser-uniqueness}.
+This includes iPhone and Android browsers which are a lot more difficult to fingerprint due to the small amount of plugins and fonts that are commonly installed or available.
+However, due to limited cookie options on these browsers they're often easier to track.
+The most identifying characteristics were found to be plugins and fonts, followed by User Agent, HTTP Accept headers and screen resolution.
+The 90\% figure may also be lower than the expected result for a more global sample because the type of user that would visit EFF's website are far more likely to already be privacy aware and use common browsers and plugins.
+
