@@ -63,6 +63,7 @@ This information is explained in Table~\ref{tab:navigator-props}.
     \texttt{javaEnabled()} & {Returns whether or not Java is enabled} \\ \hline
     \texttt{language} & {Returns the language of the browser} \\ \hline
     \texttt{platform} & {Returns the browser platform / operating system} \\ \hline
+    \texttt{plugins} & {Returns the list of plugins installed in the browser} \\ \hline
     \texttt{product} & {Returns the product name of the browser engine} \\ \hline
     \texttt{userAgent} & {Returns the User Agent of the browser} \\
     \hline
@@ -70,6 +71,9 @@ This information is explained in Table~\ref{tab:navigator-props}.
 \caption{Table explaining what the relevant \texttt{window.navigator} properties reveal}
 \label{tab:navigator-props}
 \end{table}
+
+The most significant of these properties in terms of bits of entropy exposed is the \texttt{plugins} property, since it varies quite significantly from browser to browser.
+It returns the list of plugins installed, usually paired with the version.
 
 Whereas these characteristics are convenient to access with JavaScript and readily supplied by the browser, there's also a huge amount of additional information which can be retrieved.
 The first of which is detecting what fonts the user has installed.
@@ -88,8 +92,30 @@ A huge list of fonts can be tested for using this method, bypassing the inherent
 \label{fig:font-change}
 \end{figure}
 
+More information is exposed with some of the JavaScript \texttt{math} library functions.
+A number of \texttt{math} library funcions will return different values depending on 32bit vs 64bit architectures, as well as what the operating system is.
+For example, the output of \texttt{Math.tan(-1e300)} is \texttt{-1.4214488238747245} on a 64bit computer whereas it'll output \texttt{-4.987183803371025} on a Windows machine \citep{browserprint-math}.
+This basic test is one of the methods fingerprinters can use to check if a browser is spoofing its platform or User Agent.
 
-- Other JavaScript FP methods incl.\ canvas, plugins, audionode, math.tan.
+There are two more important methods of gaining information about the browser through JavaScript, both similar in their approach.
+The first is called `canvas fingerprinting'.
+This works by using the \texttt{canvas} HTML element on a webpage.
+A \texttt{canvas} element is a box on a webpage that text and graphics can be drawn to.
+This rendered data can then be retrieved and sent back to the server.
+Depending on a number of characteristics, such as the installed GPU and the graphics card drivers, this data will render slightly differently, exposing more information as a result \citep{canvas-fingerprint}.
+This information is also orthogonal to other fingerprint information, consistent, high-entropy, is transparent to the user and is easily obtainable.
+
+\begin{figure}[h]
+\caption{Example of a HTML5 \texttt{<canvas>} element}
+\includegraphics[scale=0.8]{canvas-example}
+\centering
+\label{fig:canvas-example}
+\end{figure}
+
+There's another similar method of fingerprinting called `audio fingerprinting'.
+This uses the \texttt{AudioContext} browser API to generate and modify an audio signal.
+This audio signal can be retrieved and measured, and once again differences between browsers are evident when comparing generated signals across different browsers.
+It also reveals a number of other characteristics such as sample rate, max channel count and number of inputs and outputs \citep{audio-fingerprint}.
 
 - Flash methods incl.\ platform (http://stackoverflow.com/questions/3894488/is-there-anyway-to-detect-os-language-using-javascript), fonts, plugz
 
