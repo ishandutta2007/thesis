@@ -74,6 +74,8 @@ This information is explained in Table~\ref{tab:navigator-props}.
 
 The most significant of these properties in terms of bits of entropy exposed is the \texttt{plugins} property, since it varies quite significantly from browser to browser.
 It returns the list of plugins installed, usually paired with the version.
+However, this list is not fully enumerable, it can't be read as one would expect.
+To check if a user has a plugin installed, the fingerprinter must query the list with a specific plugin.
 
 Whereas these characteristics are convenient to access with JavaScript and readily supplied by the browser, there's also a huge amount of additional information which can be retrieved.
 The first of which is detecting what fonts the user has installed.
@@ -94,7 +96,8 @@ A huge list of fonts can be tested for using this method, bypassing the inherent
 
 More information is exposed with some of the JavaScript \texttt{math} library functions.
 A number of \texttt{math} library funcions will return different values depending on 32bit vs 64bit architectures, as well as what the operating system is.
-For example, the output of \texttt{Math.tan(-1e300)} is \texttt{-1.4214488238747245} on a 64bit computer whereas it'll output \texttt{-4.987183803371025} on a Windows machine \citep{browserprint-math}.
+For example, the output of \\
+\texttt{Math.tan(-1e300)} is \texttt{-1.4214488238747245} on a 64bit Linux computer whereas it'll output \texttt{-4.987183803371025} on a Windows machine \citep{floating-point-bug}.
 This basic test is one of the methods fingerprinters can use to check if a browser is spoofing its platform or User Agent.
 
 There are two more important methods of gaining information about the browser through JavaScript, both similar in their approach.
@@ -107,7 +110,7 @@ This information is also orthogonal to other fingerprint information, consistent
 
 \begin{figure}[h]
 \caption{Example of a HTML5 \texttt{<canvas>} element}
-\includegraphics[scale=0.8]{canvas-example}
+\fbox{\includegraphics[scale=0.8]{canvas-example}}
 \centering
 \label{fig:canvas-example}
 \end{figure}
@@ -117,8 +120,17 @@ This uses the \texttt{AudioContext} browser API to generate and modify an audio 
 This audio signal can be retrieved and measured, and once again differences between browsers are evident when comparing generated signals across different browsers.
 It also reveals a number of other characteristics such as sample rate, max channel count and number of inputs and outputs \citep{audio-fingerprint}.
 
-- Flash methods incl.\ platform (http://stackoverflow.com/questions/3894488/is-there-anyway-to-detect-os-language-using-javascript), fonts, plugz
+\subsubsection{Information Gained Using Flash}
 
-- Java shizzle
+The Flash plugin is a large source of browser information for fingerprinters.
+Through Flash, the fingerprinter has access to the list of plugins the user has installed.
+Unlike the \texttt{window.navigator} JavaScript object which also supplies the list of installed plugins, accessing the list through Flash fully enumerates the entire list and is fully readable, making it much easier to see the installed plugins.
+As well as fully enumerating plugins, it also fully enumerates fonts.
+Whereas in JavaScript, each font has to be queried individually, effectively limiting the number of fonts a fingerprinter can quickly check, Flash returns the full list of fonts that are installed on the system.
+This makes it far easier to read the list of fonts and generally will give a much more in-depth list than probing for them using JavaScript.
+This list of fonts can also be retrieved using a Java Applet.
+
+Flash also exposes platform information, showing more information than the \texttt{window.navigator} JavaScript object as it shows the major and minor versions of the operating system instead of just the name and architecture.
+In addition, Flash reveals the platform's language which isn't available through common browser APIs (Internet Explorer being the exception).
 
 - Effectiveness
