@@ -23,7 +23,7 @@ The full flow of a HTTP request in the browser is displayed in Figure~\ref{fig:w
 \end{figure}
 
 The add-on in this case acts as a proxy between the browser and the website, changing the traffic before passing it on.
-Listing~\ref{lst:user-agent} shows the developed background script that changes the User Agent.
+Listing~\ref{lst:user-agent} shows background script at an early stage of development that alters the User Agent to a pre-defined one (using Windows and Chrome).
 Using this same method, I was able to change other headers, such as editing the date header to have a different timezone than the actual timezone of the computer or changing the HTTP\_ACCEPT headers.
 
 \begin{lstlisting}[caption={The callback used to change the User Agent header}, label={lst:user-agent}]
@@ -49,6 +49,7 @@ This is because of the different functionality of different browsers can be quer
 By spoofing the value, it makes it more obvious to a complex fingerprinter what the user's identity is, as so few browsers spoof this information.
 For this reason, the final iteration of the add-on does not alter the User Agent header.
 In addition to this, the timezone header is not altered because of problems with usability for sites that depend on accurate timing information.
+These are some of the first problems I ran into, but it was neither the last time I had to ask myself `Is concealing or spoofing this characteristic doing more harm than good?' nor was it the last time I had to consider the balance of usability and privacy.
 
 \subsection{Flash Prevention}
 \subsection{Prevent Canvas and Audio Fingerprinting}
