@@ -52,6 +52,28 @@ In addition to this, the timezone header is not altered because of problems with
 These are some of the first problems I ran into, but it was neither the last time I had to ask myself `Is concealing or spoofing this characteristic doing more harm than good?' nor was it the last time I had to consider the balance of usability and privacy.
 
 \subsection{Flash Prevention}
+
+Removing or at the very least limiting Flash usage was a key part of the project, since it reveals so much information to fingerprinters.
+Luckily Firefox and other commonly used browsers supply preferences for disabling Flash, on Firefox users can disable it altogether or change it to a `click-to-play' setting, where if a page uses Flash an alert will appear asking the user if they'd like to grant the site permission to use Flash once, forever, or to ignore the request.
+I considered developing these options into the add-on itself but felt it was redundant with the option already implemented at the browser level.
+
+Due to roughly 10\% of websites using Flash, the `click-to-play' setting is my recommended one to users of the add-on \citep{flash-usage}.
+This protect the user against fingerprinters using Flash unless they choose to allow Flash on a specific website.
+It unfortunately leaves the decision to the user, and can be difficult to tell why a website would require Flash (eg.\ for watching a video).
+With the decline in use of Flash (illustrated in Figure~\ref{fig:flash-usage}) soon the best option will certainly be to disable it altogether, but right now it's difficult to advise to block it altogether when it can cause breakages for many popular websites.
+
+\begin{figure}[h!]
+\caption{The decline in Flash usage across the web}
+\includegraphics[scale=0.35]{flash-usage}
+\centering
+\label{fig:flash-usage}
+\end{figure}
+
 \subsection{Prevent Canvas and Audio Fingerprinting}
+
+Lots of words.
+
 \subsection{Font Fingerprinting}
+
+Moar words.
 
