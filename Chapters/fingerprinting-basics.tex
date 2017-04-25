@@ -121,6 +121,8 @@ This uses the \texttt{AudioContext} browser API to generate and modify an audio 
 This audio signal can be retrieved and measured, and once again differences between browsers are evident when comparing generated signals across different browsers.
 It also reveals a number of other characteristics such as sample rate, max channel count and number of inputs and outputs \citep{audio-fingerprint}.
 
+It's also possible to fingerprint the user by detecting the timing of keystrokes, since many users will have different typing patterns \citep{keystrokes}.
+
 \subsubsection{Information Gained Using Flash}
 
 The Flash plugin is a large source of browser information for fingerprinters.
@@ -142,6 +144,4 @@ This includes iPhone and Android browsers which are a lot more difficult to fing
 However, due to limited cookie options on these browsers they're often easier to track.
 The most identifying characteristics were found to be plugins and fonts, followed by User Agent, HTTP Accept headers and screen resolution.
 The 90\% figure may also be lower than the expected result for a more global sample because the type of user that would visit EFF's website are far more likely to already be privacy aware and use common browsers and plugins.
-
-- Clock Skew
 

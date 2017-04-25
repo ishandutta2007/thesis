@@ -7,10 +7,20 @@ However The Tor Project, the developers of the Tor Browser use a different strat
 This is because of the disadvantages associated with mitigating fingerpringing through randomisation \citep{tor-project}.
 
 It's difficult to evaluate just how effective randomisation is for preventing fingerprinting, as the fingerprinters can become more and more sophisticated and model the random values to create a more stable print.
-There are also many hardware characteristics that simply can't be randomised, since there are other methods that can be used in fingerprinting such as measuring clock skew which software can't detect or hinder.
+There are also many hardware characteristics that simply can't be randomised, since there are other methods that can be used in fingerprinting such as measuring clock skew which software can't detect or hinder \citep{skew}.
 In addition, randomisation introduces usability issues if the webpages depend on some of the information that's randomised, such to cause the site to change when revisited or refreshed.
+
+\begin{figure}[h]
+\caption{Download pages are an example of pages which will cause usability problems when information such as platform is randomised. Here is a webpage that has detected Linux as the platform.}
+\includegraphics[scale=0.8]{steam}
+\centering
+\label{fig:steam}
+\end{figure}
+
 There are also performance costs associated with randomisation; since the fingerprinting surface for a browser is quite large, it can cause the page to take significantly more time to load, and can exhaust the entropy pools of a computer, since true randomness is a resource on computers.
 Finally, this randomisation process can actually expose another fingerprinting characteristic, as the generation of the random values will take time, and could be measured.
 
-
+In place of randomisation, the Tor Browser uses the strategy of uniformity to mitigate fingerprinting.
+The theory behind it is that every browser looks identical or close to identical, the fingerprinting surface is too small to tell users apart and individually identify a user.
+To do this, as many of the previously explained characteristics as possible need to be set to values that give away as little information as possible by returning common values or blocking access altogether (although care needs to be taken to not unintentionally make the browser more unique by restricting API access).
 
