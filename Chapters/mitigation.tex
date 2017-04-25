@@ -1,7 +1,16 @@
 \chapter{Mitigating Fingerprinting}
 
-How to fight tha man.
+To defend against fingerprinting, there are generally two go-to strategies.
+The first is randomisation, so the browser randomizes much of if not all of the information given to the fingerprinter so that every time that the user returns to a site, the fingerprinter will observe a new fingerprint and can't identify the user as someone who's returned to the site.
+This has been shown to be an effective method for mitigating fingerprinting \citep{privaricator}.
+However The Tor Project, the developers of the Tor Browser use a different strategy to combat fingerprinting, uniformity.
+This is because of the disadvantages associated with mitigating fingerpringing through randomisation \citep{tor-project}.
 
-- Randomness
+It's difficult to evaluate just how effective randomisation is for preventing fingerprinting, as the fingerprinters can become more and more sophisticated and model the random values to create a more stable print.
+There are also many hardware characteristics that simply can't be randomised, since there are other methods that can be used in fingerprinting such as measuring clock skew which software can't detect or hinder.
+In addition, randomisation introduces usability issues if the webpages depend on some of the information that's randomised, such to cause the site to change when revisited or refreshed.
+There are also performance costs associated with randomisation; since the fingerprinting surface for a browser is quite large, it can cause the page to take significantly more time to load, and can exhaust the entropy pools of a computer, since true randomness is a resource on computers.
+Finally, this randomisation process can actually expose another fingerprinting characteristic, as the generation of the random values will take time, and could be measured.
 
-- Uniformity
+
+
