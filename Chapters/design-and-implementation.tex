@@ -91,5 +91,23 @@ This allowed me to change a setting in Firefox's config files, effectively limit
 
 \subsection{Prevent Canvas and Audio Fingerprinting}
 
-Lots of words.
+Preventing Canvas fingerprinting was the most difficult part of the project by far.
+This is due to a number of problems and roadblocks I ran into during the development.
+The original plan was for the add-on to simply listen to the webpage for changes once it begins to load, and when the page changes, scan any added nodes for any \texttt{<canvas>} elements, and change the objects themselves to restrict the relevant APIs.
+This is essentially what the final product does, though it's not as simple as initially thought.
 
+The main methods that need to be blocked are explained in Table~\ref{tab:canvas-methods}.
+
+\begin{table}[h]
+\centering
+\begin{tabular}{| l | r |}
+    \hline
+    \textbf{<canvas> function} & \textbf{Description} \\ \hline
+    \texttt{context.measureText()} & {Returns the size of text in the canvas element} \\ \hline
+    \texttt{context.getImageData()} & {Returns an object containing data about the canvas element inluding a full pixel map} \\ \hline
+    \texttt{canvas.toDataUrl()} & {Returns a URL which contains the canvas itself (fully rendered)} \\
+    \hline
+\end{tabular}
+\caption{Table explaining some HTML \texttt{<canvas>} functions}
+\label{tab:canvas-methods}
+\end{table}
