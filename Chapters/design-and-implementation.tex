@@ -100,14 +100,18 @@ The main methods that need to be blocked are explained in Table~\ref{tab:canvas-
 
 \begin{table}[h]
 \centering
-\begin{tabular}{| l | r |}
+\begin{tabular}{| p{6cm} | p{8cm} |}
     \hline
     \textbf{<canvas> function} & \textbf{Description} \\ \hline
     \texttt{context.measureText()} & {Returns the size of text in the canvas element} \\ \hline
-    \texttt{context.getImageData()} & {Returns an object containing data about the canvas element inluding a full pixel map} \\ \hline
-    \texttt{canvas.toDataUrl()} & {Returns a URL which contains the canvas itself (fully rendered)} \\
+    \texttt{context.getImageData()} & {Returns an object containing data about \newline the canvas element inluding a full pixel map} \\ \hline
+    \texttt{canvas.toDataUrl()} & {Returns a URL which contains the canvas \newline itself (fully rendered)} \\
     \hline
 \end{tabular}
-\caption{Table explaining some HTML \texttt{<canvas>} functions}
+\caption{Table explaining \texttt{<canvas>} functions that need to be restricted}
 \label{tab:canvas-methods}
 \end{table}
+
+
+
+
