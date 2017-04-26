@@ -4,15 +4,16 @@ After thoroughly researching both how fingerprinting works and how best to mitig
 The application that was designed and implemented is a browser add-on using the WebExtension API\@.
 This is a browser add-on system that is cross-platform, compatible with Firefox, Chrome and Opera, though only Firefox was targeted due to scope and the limited timeframe available for the project.
 WebExtensions have two primary types of script, one is a background script which runs across all tabs, the second is a content scrip, which is run in each tab individually.
-I decided to use a combination of Firefox settings and preferences and the add-on itself to mitigate fingerprinting, as some of the settings themselves were vital to disabling fingerprinting.
+The chosen method of mitigating fingerprinting was to use a combination of Firefox settings and preferences and the add-on itself to mitigate fingerprinting, as some of the settings themselves were vital to disabling fingerprinting.
 The project originally aimed to do several things, outlined below.
 
 \subsection{Alter Passive Properties}
 
 This first feature of the application was to spoof passively transmitted properties in HTTP requests, such as User Agent.
-After studying the WebExtension API, I found the \texttt{webRequest} object \citep{webRequest}.
+The WebExtension API contains the \texttt{webRequest} object \citep{webRequest}.
 This can have an \texttt{eventListener} attached to it to wait for a certain event to trigger, and once this event triggers, the add-on can execute code before the browser continues with the request.
-Included in these events is the \texttt{onBeforeSendHeaders} event, which is what I originally used.
+Included in these events is the \texttt{onBeforeSendHeaders} event, which fires before the HTTP request headers are sent.
+This is what was used to change the headers.
 The full flow of a HTTP request in the browser is displayed in Figure~\ref{fig:webRequest-flow}.
 
 \begin{figure}[h]
@@ -24,7 +25,7 @@ The full flow of a HTTP request in the browser is displayed in Figure~\ref{fig:w
 
 The add-on in this case acts as a proxy between the browser and the website, changing the traffic before passing it on.
 Listing~\ref{lst:user-agent} shows background script at an early stage of development that alters the User Agent to a pre-defined one (using Windows and Chrome).
-Using this same method, I was able to change other headers, such as editing the date header to have a different timezone than the actual timezone of the computer or changing the HTTP\_ACCEPT headers.
+Using this same method, other headers could also be altered, such as editing the date header to have a different timezone than the actual timezone of the computer or changing the HTTP\_ACCEPT headers.
 
 \begin{lstlisting}[caption={The callback used to change the User Agent header}, label={lst:user-agent}]
 var ua = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/55.0.2883.87 Safari/537.36";
@@ -44,18 +45,18 @@ function headerCallback(requestDetails) {
 browser.webRequest.onBeforeSendHeaders.addListener(headerCallback, {urls: ["<all_urls>"]}, ["requestHeaders", "blocking"]);
 \end{lstlisting}
 
-After doing more research, I came to realise that spoofing the User Agent for a more common user agent is only going to work against the computer against anything more than the simplest of fingerprinters.
+After doing more research, it became apparent that spoofing the User Agent for a more common user agent is only going to work against the computer against anything more than the simplest of fingerprinters.
 This is because of the different functionality of different browsers can be queried and by process of elimination, the browser and version quickly identified.
 By spoofing the value, it makes it more obvious to a complex fingerprinter what the user's identity is, as so few browsers spoof this information.
 For this reason, the final iteration of the add-on does not alter the User Agent header.
 In addition to this, the timezone header is not altered because of problems with usability for sites that depend on accurate timing information.
-These are some of the first problems I ran into, but it was neither the last time I had to ask myself ~`Is concealing or spoofing this characteristic doing more harm than good?' nor was it the last time I had to consider the balance of usability and privacy.
+These are some of the first problems that were encountered, but it was neither the last time the question came up of ~`Is concealing or spoofing this characteristic doing more harm than good?' nor was it the last time that balance of usability and privacy was considered.
 
 \subsection{Flash Prevention}
 
 Removing or at the very least limiting Flash usage was a key part of the project, since it reveals so much information to fingerprinters.
 Luckily Firefox and other commonly used browsers supply preferences for disabling Flash, on Firefox users can disable it altogether or change it to a `click-to-play' setting, where if a page uses Flash an alert will appear asking the user if they'd like to grant the site permission to use Flash once, forever, or to ignore the request.
-I considered developing these options into the add-on itself but felt it was redundant with the option already implemented at the browser level.
+These options could have been built into the add-on itself but ultimately it would have been redundant with the option already implemented at the browser level.
 
 Due to roughly 10\% of websites using Flash, the `click-to-play' setting is my recommended one to users of the add-on \citep{flash-usage}.
 This protect the user against fingerprinters using Flash unless they choose to allow Flash on a specific website.
@@ -73,7 +74,8 @@ With the decline in use of Flash (illustrated in Figure~\ref{fig:flash-usage}) s
 
 Prevention of font fingerprinting was another important part of the project.
 Font fingerprinting through Flash had already been prevented through disabling it altogether, which left the problem of how to stop font fingerprinting through JavaScript.
-This was what seemed like an impossible problem, as the browser will use whatever fonts are installed, from extensive research, I could find no method of disabling fonts or concealing them at the add-on level, since it could be altered using CSS, which is too low-level for an add-on to interfere with.
+This was what seemed like an impossible problem, as the browser will use whatever fonts are installed.
+After much research, it seemed that there was no method of disabling fonts or concealing them at the add-on level, since it could be altered using CSS, which is too low-level for an add-on to interfere with.
 
 This was a big problem for the project, as font fingerprinting amounts for roughly 7.6 bits of entropy for a sample size of 1,000 users \citep{font-metrics}.
 Observing Figure~\ref{fig:font-metrics}, one can see the highest (black) line indicates the maximum entropy if every browser has a unique set of fonts, and the (red) line beneath indicates the entropy available from checking the installed fonts.
@@ -92,13 +94,13 @@ This allowed me to change a setting in Firefox's config files, effectively limit
 \subsection{Prevent Canvas and Audio Fingerprinting}
 
 Preventing Canvas fingerprinting was the most difficult part of the project by far.
-This is due to a number of problems and roadblocks I ran into during the development.
+This is due to a number of problems and roadblocks that materialised during the development of the add-on.
 The original plan was for the add-on to simply listen to the webpage for changes once it begins to load, and when the page changes, scan any added nodes for any \texttt{<canvas>} elements, and change the objects themselves to restrict the relevant APIs.
 This is essentially what the final product does, though it's not as simple as initially thought.
 
-The main methods that need to be blocked are explained in Table~\ref{tab:canvas-methods}.
+The main functions that need to be blocked are explained in Table~\ref{tab:canvas-methods}.
 
-\begin{table}[h]
+\begin{table}[h!]
 \centering
 \begin{tabular}{| p{6cm} | p{8cm} |}
     \hline
@@ -112,6 +114,40 @@ The main methods that need to be blocked are explained in Table~\ref{tab:canvas-
 \label{tab:canvas-methods}
 \end{table}
 
+Two of the functions that need to be blocked come from the \texttt{context} object.
+The context of a \texttt{canvas} is an object which is used to write to and read from the \texttt{canvas}.
+For this reason, blocking access to the context object and to the \texttt{toDataUrl()} function seemed like good first steps to take.
+To do this it was clear that a content script (a script that runs locally in every browser tab) was required.
+The first objective was to make sure that the add-on could detect \texttt{<canvas>} elements, as it could be built up easily from that initial step.
+For this, a JavaScript \texttt{MutationObserver} was used.
+This is an object which takes a callback function as a parameter, and then is used to `listen' to a HTML node on a webpage.
+Whenever that node changes (or its child nodes), the changes are passed to the callback function.
+The first iteration simply prints to the browser console when a \texttt{<canvas>} element is encountered, shown in listing~\ref{lst:canvas-logger}.
 
+\begin{lstlisting}[caption={A script that listens to a webpage, and prints to the console when a \texttt{<canvas>} element is added}, label={lst:canvas-logger}]
+function onMutation(mutations) {
+    for (var i = 0; i < mutations.length; i++) {
+        var addedNodes = mutations[i].addedNodes;
+        for (var j = 0; j < addedNodes.length; j++) {
+            var node = addedNodes[j];
+            var found = [];
+            if (node.nodeName === 'CANVAS') {
+                found.push(node);
+            } else if (node.children && node.children.length) {
+                found = node.getElementsByTagName('canvas');
+            }
+            for (var k = 0; k < found.length; k++) {
+                var canvas = found[k];
+                console.log("Found a canvas");
+            }
+        }
+    }
 
+}
 
+var observer = new MutationObserver(onMutation);
+observer.observe(document, {
+    childList: true,
+    subtree: true
+});
+\end{lstlisting}
