@@ -27,6 +27,7 @@ The add-on in this case acts as a proxy between the browser and the website, cha
 Listing~\ref{lst:user-agent} shows background script at an early stage of development that alters the User Agent to a pre-defined one (using Windows and Chrome).
 Using this same method, other headers could also be altered, such as editing the date header to have a different timezone than the actual timezone of the computer or changing the HTTP\_ACCEPT headers.
 
+\begin{minipage}{\linewidth}
 \begin{lstlisting}[caption={The callback used to change the User Agent header}, label={lst:user-agent}]
 var ua = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/55.0.2883.87 Safari/537.36";
 
@@ -44,6 +45,7 @@ function headerCallback(requestDetails) {
 
 browser.webRequest.onBeforeSendHeaders.addListener(headerCallback, {urls: ["<all_urls>"]}, ["requestHeaders", "blocking"]);
 \end{lstlisting}
+\end{minipage}
 
 After doing more research, it became apparent that spoofing the User Agent for a more common user agent is only going to work against the computer against anything more than the simplest of fingerprinters.
 This is because of the different functionality of different browsers can be queried and by process of elimination, the browser and version quickly identified.
@@ -124,6 +126,7 @@ This is an object which takes a callback function as a parameter, and then is us
 Whenever that node changes (or its child nodes), the changes are passed to the callback function.
 The first iteration simply prints to the browser console when a \texttt{<canvas>} element is encountered, shown in listing~\ref{lst:canvas-logger}.
 
+\begin{minipage}{\linewidth}
 \begin{lstlisting}[caption={A script that listens to a webpage, and prints to the console when a \texttt{<canvas>} element is added}, label={lst:canvas-logger}]
 function onMutation(mutations) {
     for (var i = 0; i < mutations.length; i++) {
@@ -150,6 +153,7 @@ observer.observe(document, {
     subtree: true
 });
 \end{lstlisting}
+\end{minipage}
 
 This worked to a degree, it could not detect canvas elements in within \texttt{<iframe>} HTML elements.
 These are elements which load in content from another web page either on the same site or from an external website.
@@ -166,6 +170,7 @@ It works by injecting a \texttt{<script>} node to the beginning of the HTML docu
 This script contains similar code to Listing~\ref{lst:canvas-logger}, though instead of being executed with the permissions clearance of an add-on (unable to change JavaScript objects), it is executed as if it was always part of the web page.
 A simple version of this is shown in Listing~\ref{lst:injection}.
 
+\begin{minipage}{\linewidth}
 \begin{lstlisting}[caption={Injecting a script into the web page}, label={lst:injection}]
 var actualCode = '(' + function() {
     // Contents of the injected script go in here
@@ -176,6 +181,7 @@ s.textContent = actualCode;
 document.documentElement.appendChild(s);
 s.remove();
 \end{lstlisting}
+\end{minipage}
 
 This method was successfull in breaking \texttt{<canvas>} elements, and meant that they couldn't be drawn to and data couldn't be retrieved from them.
 However this still didn't work for \texttt{<iframe>} elements.
@@ -202,6 +208,7 @@ This meant that \texttt{createElement()} function needed to be altered for every
 Although it's simple enough to prevent access to the function, it isn't a satisfactory solution as it's a function that's used to add any HTML nodes to a website, so without it almost all non-static web pages break.
 Listing~\ref{lst:create-element} shows how this is achieved.
 
+\begin{minipage}{\linewidth}
 \begin{lstlisting}[caption={The rewriting of the \texttt{createElement() function}}, label={lst:create-element}]
 document.createElement = function(create) {
     return function() {
@@ -213,4 +220,5 @@ document.createElement = function(create) {
     }
 }(document.createElement)
 \end{lstlisting}
+\end{minipage}
 
