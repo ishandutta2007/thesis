@@ -93,7 +93,7 @@ Thankfully version 52 of Firefox released on the 7th of March 2017.
 In this version of Firefox, a new feature was added that allows users to define a list of `whitelisted' fonts which Firefox will use as if they are the only fonts installed on the system.
 This allowed me to change a setting in Firefox's config files, effectively limiting the system fonts to a select few.
 
-\subsection{Prevent Canvas and Audio Fingerprinting}
+\subsection{Prevent Canvas Fingerprinting}
 
 Preventing Canvas fingerprinting was the most difficult part of the project by far.
 This is due to a number of problems and roadblocks that materialised during the development of the add-on.
@@ -206,7 +206,9 @@ This problem was difficult to solve, but after sending and receiving an email to
 The \texttt{<canvas>} element in question does not need to be in the DOM itself to be used to fingerprint, it can be done solely through JavaScript, using the \texttt{document.createElement()} JavaScript function to create a canvas.
 This meant that \texttt{createElement()} function needed to be altered for every web page, as well as listening for any actual \texttt{<canvas>} elements added to the page.
 Although it's simple enough to prevent access to the function, it isn't a satisfactory solution as it's a function that's used to add any HTML nodes to a website, so without it almost all non-static web pages break.
-Listing~\ref{lst:create-element} shows how this is achieved.
+Listing~\ref{lst:create-element} shows how this is achieved without breaking the function entirely.
+\texttt{createElement()} takes the name of the HTML element to create as an argument, so when a \texttt{<canvas>} element is desired, one passes \texttt{"canvas"} as an argument to the function.
+The function was re-written to check to see what the argument is, and in the case that a canvas is being created, the function will return an \texttt{undefined} object instead of a canvas.
 
 \begin{minipage}{\linewidth}
 \begin{lstlisting}[caption={The rewriting of the \texttt{createElement() function}}, label={lst:create-element}]
@@ -221,4 +223,23 @@ document.createElement = function(create) {
 }(document.createElement)
 \end{lstlisting}
 \end{minipage}
+
+This successfully prevents canvas fingerprinting on websites in most cases.
+One case that this doesn't solve for as mentioned before is for when there's a canvas within an \texttt{<iframe>}.
+This is because the \texttt{MutationObserver} can't access the contents of an iframe that's added.
+For this reason, the app has to find iframes in the same way that it scans for \texttt{<canvas>} elements, but then has to do some processing after it's gathered them.
+After acquiring the list of iframes that are added to the page, each one then needs to be scanned in the same way as the entire page was, so another \texttt{MutationObserver} is attached to the iframe, listening for any changes within.
+The plan was to do much the same method of breaking certain APIs of the \texttt{<canvas>} elements within the iframe.
+This method unfortunately does not work.
+If the iframe is loaded in from a different domain than the one that owns the parent webpage, then the parent webpage (and by consequence the script that's injected by the add-on) can not access the contents of the iframe.
+This is due to the same-origin policy of web browsers \citep{same-origin}.
+
+The only solution that could be reached at the add-on level was too remove iframes from pages entirely.
+Needless to say this is not a usability-friendly solution for mitigating fingerprinting, as iframes are used a great deal on the web.
+This was implemented similarly to the method of finding canvas nodes, except instead of merely altering the APIs of the JavaScript objects, then entire object is deleted.
+After visiting a few websites it was clear that this wasn't a very good solution and isn't feasible as a long-term method of defence.
+\url{panopticlick.eff.org}, another online fingerprint checker can't successfully take a fingerprint when the add-on is activated with the iframe deletion code in effect.
+Although it may be seen as a positive thing that a fingerprinter doesn't work, this is not the case for other comparable fingerprinting websites.
+Many other sites simply don't function with the deletion of all of the iframe content on their pages.
+This is yet another reason why preventing fingerprinting at the add-on level is difficult.
 
