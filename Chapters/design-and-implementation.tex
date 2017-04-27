@@ -137,7 +137,6 @@ function onMutation(mutations) {
                 found = node.getElementsByTagName('canvas');
             }
             for (var k = 0; k < found.length; k++) {
-                var canvas = found[k];
                 console.log("Found a canvas");
             }
         }
@@ -151,3 +150,38 @@ observer.observe(document, {
     subtree: true
 });
 \end{lstlisting}
+
+This worked to a degree, it could not detect canvas elements in within \texttt{<iframe>} HTML elements.
+These are elements which load in content from another web page either on the same site or from an external website.
+However, this wasn't realised until later in development.
+
+Once this logging worked, the next step was to try to change the APIs for each of the \texttt{<canvas>} elements on the page.
+To do this, instead of simply printing to console when a canvas was added, the JavaScript method \texttt{Object.defineProperties()} was used to change the functions for each element that the script encountered.
+To start with, just the \texttt{getContext()} function was blocked, since this prevents writing to and reading from the element.
+This didn't work when written in the same way that Listing~\ref{lst:canvas-logger} was written.
+The reason behind this is that add-on content scripts have restricted permissions, and can not directly make changes to JavaScript objects defined by the web page, they can only alter the DOM itself.
+
+After discovering this, and researching if it is possible to bypass this security feature, an exploit was discovered.
+It works by injecting a \texttt{<script>} node to the beginning of the HTML document that contains the webpage.
+This script contains similar code to Listing~\ref{lst:canvas-logger}, though instead of being executed with the permissions clearance of an add-on (unable to change JavaScript objects), it is executed as if it was always part of the web page.
+
+This method was successfull in breaking \texttt{<canvas>} elements, and meant that they couldn't be drawn to and data couldn't be retrieved from them.
+However this still didn't work for \texttt{<iframe>} elements.
+In addition, the script did not prevent \url{browserprint.info}, a fingerprinting tool, from acquiring a canvas fingerprint from the browser.
+
+\begin{figure}[!tbp]
+    \centering
+    \begin{minipage}[b]{0.4\textwidth}
+        \fbox{\includegraphics[width=\textwidth]{hello-world-canvas}}
+        \caption{A \texttt{<canvas>} element without the add-on running}
+        \label{fig:hello-world-canvas}
+    \end{minipage}
+    \hfill
+    \begin{minipage}[b]{0.4\textwidth}
+        \fbox{\includegraphics[width=\textwidth]{blank-canvas}}
+        \caption{The same \texttt{<canvas>} element with the add-on running}
+        \label{fig:blank-canvas}
+    \end{minipage}
+\end{figure}
+
+
