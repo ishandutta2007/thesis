@@ -164,10 +164,22 @@ The reason behind this is that add-on content scripts have restricted permission
 After discovering this, and researching if it is possible to bypass this security feature, an exploit was discovered.
 It works by injecting a \texttt{<script>} node to the beginning of the HTML document that contains the webpage.
 This script contains similar code to Listing~\ref{lst:canvas-logger}, though instead of being executed with the permissions clearance of an add-on (unable to change JavaScript objects), it is executed as if it was always part of the web page.
+A simple version of this is shown in Listing~\ref{lst:injection}.
+
+\begin{lstlisting}[caption={Injecting a script into the web page}, label={lst:injection}]
+var actualCode = '(' + function() {
+    // Contents of the injected script go in here
+} + ')();';
+
+var s = document.createElement('script');
+s.textContent = actualCode;
+document.documentElement.appendChild(s);
+s.remove();
+\end{lstlisting}
 
 This method was successfull in breaking \texttt{<canvas>} elements, and meant that they couldn't be drawn to and data couldn't be retrieved from them.
 However this still didn't work for \texttt{<iframe>} elements.
-In addition, the script did not prevent \url{browserprint.info}, a fingerprinting tool, from acquiring a canvas fingerprint from the browser.
+In addition, the script did not prevent \url{browserprint.info}, a website with a fingerprinting test, from acquiring a canvas fingerprint from the browser.
 
 \begin{figure}[!tbp]
     \centering
@@ -184,4 +196,21 @@ In addition, the script did not prevent \url{browserprint.info}, a fingerprintin
     \end{minipage}
 \end{figure}
 
+This problem was difficult to solve, but after sending and receiving an email to and from the team at Browserprint, the solution was much clearer.
+The \texttt{<canvas>} element in question does not need to be in the DOM itself to be used to fingerprint, it can be done solely through JavaScript, using the \texttt{document.createElement()} JavaScript function to create a canvas.
+This meant that \texttt{createElement()} function needed to be altered for every web page, as well as listening for any actual \texttt{<canvas>} elements added to the page.
+Although it's simple enough to prevent access to the function, it isn't a satisfactory solution as it's a function that's used to add any HTML nodes to a website, so without it almost all non-static web pages break.
+Listing~\ref{lst:create-element} shows how this is achieved.
+
+\begin{lstlisting}[caption={The rewriting of the \texttt{createElement() function}}, label={lst:create-element}]
+document.createElement = function(create) {
+    return function() {
+        var ret = create.apply(this, arguments);
+        if (ret.tagName.toLowerCase() === "canvas") {
+            return undefined;
+        }
+        return ret;
+    }
+}(document.createElement)
+\end{lstlisting}
 
