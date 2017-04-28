@@ -10,9 +10,11 @@
 
 % Lets you pick fonts. Only works if you compile with xelatex or luatex
 \usepackage[no-math]{fontspec}
+\usepackage[hyphens]{url}
+\Urlmuskip=0mu plus 1mu
 
 % Makes page numbers, TOC and citations clickable
-\usepackage[colorlinks]{hyperref}
+\usepackage[colorlinks, breaklinks=true]{hyperref}
 \usepackage{hyperref}
 
 % For block quotes
@@ -72,6 +74,9 @@
 
 % For highlighting in the margin things I have to do
 \usepackage{todonotes}
+
+% For breaking citations over lines
+
 
 \setdefaultlanguage{english}
 
