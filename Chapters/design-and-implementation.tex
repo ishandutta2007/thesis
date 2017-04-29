@@ -56,6 +56,30 @@ For this reason, the final iteration of the add-on does not alter the User Agent
 In addition to this, the timezone header is not altered because of problems with usability for sites that depend on accurate timing information.
 These are some of the first problems that were encountered, but it was neither the last time the question came up of ~`Is concealing or spoofing this characteristic doing more harm than good?' nor was it the last time that balance of usability and privacy was considered.
 
+\subsection{\texttt{window.navigator} Properties}
+
+Many of the \texttt{navigator} properties are related to the platform and browser that are being used, and often provide a method to retrieve this information without parsing the User Agent string.
+These properties were altered in an early version of the add-on, but just like altering the User Agent in the HTTP request, this makes the user more unique rather than less unique.
+There is however one property which is important to change: the \texttt{plugins} property.
+This contains an object describing the plugins installed for the browser.
+To alter this, the \texttt{plugins} property is redefined to be an empty list, concealing the installed plugins as a result.
+The \texttt{Object.defineProperties()} JavaScript method was used to achieve this, shown in Figure~\ref{lst:plugins}
+
+\begin{figure}[h!]
+\begin{lstlisting}
+Object.defineProperties(navigator, {
+    plugins: {
+        value: {length: 0},
+        configurable: false,
+        enumerable: true,
+        writable: false
+    },
+});
+\end{lstlisting}
+\caption{Snippet of the code that alters the \texttt{plugins} property}
+\label{lst:plugins}
+\end{figure}
+
 \subsection{Flash Prevention}
 
 Removing or at the very least limiting Flash usage was a key part of the project, since it reveals so much information to fingerprinters.
@@ -185,8 +209,8 @@ s.textContent = actualCode;
 document.documentElement.appendChild(s);
 s.remove();
 \end{lstlisting}
-\label{lst:injection}
 \caption{Injecting a script into the web page}
+\label{lst:injection}
 \end{figure}
 
 This method was successfull in breaking \texttt{<canvas>} elements, and meant that they could not be drawn to and data could not be retrieved from them.
