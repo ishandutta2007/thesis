@@ -60,10 +60,11 @@ These are some of the first problems that were encountered, but it was neither t
 
 Many of the \texttt{navigator} properties are related to the platform and browser that are being used, and often provide a method to retrieve this information without parsing the User Agent string.
 These properties were altered in an early version of the add-on, but just like altering the User Agent in the HTTP request, this makes the user more unique rather than less unique.
-There is however one property which is important to change: the \texttt{plugins} property.
-This contains an object describing the plugins installed for the browser.
-To alter this, the \texttt{plugins} property is redefined to be an empty list, concealing the installed plugins as a result.
-The \texttt{Object.defineProperties()} JavaScript method was used to achieve this, shown in Figure~\ref{lst:plugins}
+One of the properties contains plugin information for the browser.
+In an early stage of development, the \texttt{plugins} property was redefined to be an empty list, concealing the installed plugins as a result.
+The \texttt{Object.defineProperties()} JavaScript method was used to achieve this, shown in Figure~\ref{lst:plugins}.
+However, the fingerprinter could still detect that Flash was installed.
+This proved to make the browser more unique as very few browsers must have exclusively Flash installed on them, so the spoofing of \texttt{window.navigator} properties was not carried through to the final iteration of the add-on.
 
 \begin{figure}[h!]
 \begin{lstlisting}
