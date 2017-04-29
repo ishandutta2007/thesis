@@ -1,7 +1,50 @@
-\chapter{Results}
+\chapter{Results and Insights}
 
-- entropy without vs. with
+There were are some promising insights gained over the course of the project.
+Table~\ref{tab:results} indicates the difference in how common certain browser characteristics are when Flash and Canvas Fingerprinting are available compared to when they are disabled.
+A larger percentage indicates a more common value for a particular characteristic.
+A Sony Vaio laptop with the OpenSuse Linux distribution was used for testing, running Firefox as the browser of choice.
+The figures are calculated using \url{browserprint.info}, which provides how common each fingerprint characteristic is relative to all other users that have retrieved their fingerprint using the service.
+The other techniques that were used were not immediately successful and either will not help to mitigate fingerprinting or require further research and development to improve.
+This chapter will discuss the various parts of the browser that expose information, the methods used to try to restrict them and how successful they were.
 
-- What my add-on achieved.
+\begin{table}[h!]
+\centering
+\begin{tabular}{| p{6cm} | p{4cm} | p{4cm} |}
+    \hline
+    \textbf{Browser Characteristic} & \textbf{Frequency of value without add-on and settings} & \textbf{Frequency of value with add-on and settings} \\ \hline
+    \texttt{Platform (Flash)} & {0.015\%} & {38.46\%} \\ \hline
+    \texttt{Screen Size (Flash)} & {10.5\%} & {38.46\%} \\ \hline
+    \texttt{Language (Flash)} & {25.38\%} & {38.46\%} \\ \hline
+    \texttt{System Fonts (Flash)} & {0.022\%} & {38.46\%} \\ \hline
+    \texttt{Canvas Fingerprint} & {0.068\%} & {2.729\%} \\
+    \hline
+\end{tabular}
+\caption{Frequency of browser characteristics without protection vs. with protection}
+\label{tab:results}
+\end{table}
 
-- Without anti-FP measures vs.\ with anti-FP measures
+\subsubsection{HTTP Request}
+
+
+
+\subsubsection{Navigator}
+
+Text
+
+\subsubsection{Plugins}
+
+Text
+
+\subsubsection{Font Fingerprinting}
+
+Text
+
+\subsubsection{Flash}
+
+Text
+
+\subsubsection{Is there a reasonable way to fight it as a user?}
+
+Text
+
