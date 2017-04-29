@@ -17,18 +17,18 @@ This is what was used to change the headers.
 The full flow of a HTTP request in the browser is displayed in Figure~\ref{fig:webRequest-flow}.
 
 \begin{figure}[h]
-\caption{Showing the event flow for a HTTP request}
 \fbox{\includegraphics[scale=0.22]{webRequest-flow}}
 \centering
+\caption{Showing the event flow for a HTTP request}
 \label{fig:webRequest-flow}
 \end{figure}
 
 The add-on in this case acts as a proxy between the browser and the website, changing the traffic before passing it on.
-Listing~\ref{lst:user-agent} shows background script at an early stage of development that alters the User Agent to a pre-defined one (using Windows and Chrome).
+Figure~\ref{fig:user-agent-lst} shows a background script at an early stage of development that alters the User Agent to a pre-defined one (using Windows and Chrome).
 Using this same method, other headers could also be altered, such as editing the date header to have a different timezone than the actual timezone of the computer or changing the HTTP\_ACCEPT headers.
 
-\begin{minipage}{\linewidth}
-\begin{lstlisting}[caption={The callback used to change the User Agent header}, label={lst:user-agent}]
+\begin{figure}
+\begin{lstlisting}
 var ua = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/55.0.2883.87 Safari/537.36";
 
 function headerCallback(requestDetails) {
@@ -45,9 +45,11 @@ function headerCallback(requestDetails) {
 
 browser.webRequest.onBeforeSendHeaders.addListener(headerCallback, {urls: ["<all_urls>"]}, ["requestHeaders", "blocking"]);
 \end{lstlisting}
-\end{minipage}
+\caption{The callback used to change the User Agent header}
+\label{fig:user-agent-lst}
+\end{figure}
 
-After doing more research, it became apparent that spoofing the User Agent for a more common user agent is only going to work against the computer against anything more than the simplest of fingerprinters.
+After conducting more research, it became apparent that spoofing the User Agent for a more common user agent is only going to work against the computer against anything more than the simplest of fingerprinters.
 This is because of the different functionality of different browsers can be queried and by process of elimination, the browser and version quickly identified.
 By spoofing the value, it makes it more obvious to a complex fingerprinter what the user's identity is, as so few browsers spoof this information.
 For this reason, the final iteration of the add-on does not alter the User Agent header.
@@ -60,15 +62,15 @@ Removing or at the very least limiting Flash usage was a key part of the project
 Luckily Firefox and other commonly used browsers supply preferences for disabling Flash, on Firefox users can disable it altogether or change it to a `click-to-play' setting, where if a page uses Flash an alert will appear asking the user if they'd like to grant the site permission to use Flash once, forever, or to ignore the request.
 These options could have been built into the add-on itself but ultimately it would have been redundant with the option already implemented at the browser level.
 
-Due to roughly 10\% of websites using Flash, the `click-to-play' setting is my recommended one to users of the add-on \citep{flash-usage}.
+Due to roughly 10\% of websites using Flash, the `click-to-play' setting is recommended to users of the add-on \citep{flash-usage}.
 This protect the user against fingerprinters using Flash unless they choose to allow Flash on a specific website.
 It unfortunately leaves the decision to the user, and can be difficult to tell why a website would require Flash (eg.\ for watching a video).
 With the decline in use of Flash (illustrated in Figure~\ref{fig:flash-usage}) soon the best option will certainly be to disable it altogether, but right now it's difficult to advise to block it altogether when it can cause breakages for many popular websites.
 
 \begin{figure}[h!]
-\caption{The decline in Flash usage across the web}
 \fbox{\includegraphics[scale=0.35]{flash-usage}}
 \centering
+\caption{The decline in Flash usage across the web}
 \label{fig:flash-usage}
 \end{figure}
 
@@ -83,9 +85,9 @@ This was a big problem for the project, as font fingerprinting amounts for rough
 Observing Figure~\ref{fig:font-metrics}, one can see the highest (black) line indicates the maximum entropy if every browser has a unique set of fonts, and the (red) line beneath indicates the entropy available from checking the installed fonts.
 
 \begin{figure}[h!]
-\caption{Graph of entropy vs.\ sample size for font fingerprinting.}
 \fbox{\includegraphics[scale=1.3]{font-metrics}}
 \centering
+\caption{Graph of entropy vs.\ sample size for font fingerprinting.}
 \label{fig:font-metrics}
 \end{figure}
 
@@ -126,8 +128,8 @@ This is an object which takes a callback function as a parameter, and then is us
 Whenever that node changes (or its child nodes), the changes are passed to the callback function.
 The first iteration simply prints to the browser console when a \texttt{<canvas>} element is encountered, shown in listing~\ref{lst:canvas-logger}.
 
-\begin{minipage}{\linewidth}
-\begin{lstlisting}[caption={A script that listens to a webpage, and prints to the console when a \texttt{<canvas>} element is added}, label={lst:canvas-logger}]
+\begin{figure}[h!]
+\begin{lstlisting}
 function onMutation(mutations) {
     for (var i = 0; i < mutations.length; i++) {
         var addedNodes = mutations[i].addedNodes;
@@ -153,25 +155,27 @@ observer.observe(document, {
     subtree: true
 });
 \end{lstlisting}
-\end{minipage}
+\caption{A script that listens to a webpage, and prints to the console when a \texttt{<canvas>} element is added}
+\label{lst:canvas-logger}
+\end{figure}
 
 This worked to a degree, it could not detect canvas elements in within \texttt{<iframe>} HTML elements.
 These are elements which load in content from another web page either on the same site or from an external website.
-However, this wasn't realised until later in development.
+However, this was not realised until later in development.
 
 Once this logging worked, the next step was to try to change the APIs for each of the \texttt{<canvas>} elements on the page.
 To do this, instead of simply printing to console when a canvas was added, the JavaScript method \texttt{Object.defineProperties()} was used to change the functions for each element that the script encountered.
 To start with, just the \texttt{getContext()} function was blocked, since this prevents writing to and reading from the element.
-This didn't work when written in the same way that Listing~\ref{lst:canvas-logger} was written.
+This didn't work when written in the same way that Figure~\ref{lst:canvas-logger} was written.
 The reason behind this is that add-on content scripts have restricted permissions, and can not directly make changes to JavaScript objects defined by the web page, they can only alter the DOM itself.
 
 After discovering this, and researching if it is possible to bypass this security feature, an exploit was discovered.
 It works by injecting a \texttt{<script>} node to the beginning of the HTML document that contains the webpage.
-This script contains similar code to Listing~\ref{lst:canvas-logger}, though instead of being executed with the permissions clearance of an add-on (unable to change JavaScript objects), it is executed as if it was always part of the web page.
-A simple version of this is shown in Listing~\ref{lst:injection}.
+This script contains similar code to Figure~\ref{lst:canvas-logger}, though instead of being executed with the permissions clearance of an add-on (unable to change JavaScript objects), it is executed as if it was always part of the web page.
+A simple version of this is shown in Figure~\ref{lst:injection}.
 
-\begin{minipage}{\linewidth}
-\begin{lstlisting}[caption={Injecting a script into the web page}, label={lst:injection}]
+\begin{figure}[h!]
+\begin{lstlisting}
 var actualCode = '(' + function() {
     // Contents of the injected script go in here
 } + ')();';
@@ -181,10 +185,12 @@ s.textContent = actualCode;
 document.documentElement.appendChild(s);
 s.remove();
 \end{lstlisting}
-\end{minipage}
+\label{lst:injection}
+\caption{Injecting a script into the web page}
+\end{figure}
 
-This method was successfull in breaking \texttt{<canvas>} elements, and meant that they couldn't be drawn to and data couldn't be retrieved from them.
-However this still didn't work for \texttt{<iframe>} elements.
+This method was successfull in breaking \texttt{<canvas>} elements, and meant that they could not be drawn to and data could not be retrieved from them.
+However this still did not work for \texttt{<iframe>} elements.
 In addition, the script did not prevent \url{browserprint.info}, a website with a fingerprinting test, from acquiring a canvas fingerprint from the browser.
 
 \begin{figure}[!tbp]
@@ -205,13 +211,13 @@ In addition, the script did not prevent \url{browserprint.info}, a website with 
 This problem was difficult to solve, but after sending and receiving an email to and from the team at Browserprint, the solution was much clearer.
 The \texttt{<canvas>} element in question does not need to be in the DOM itself to be used to fingerprint, it can be done solely through JavaScript, using the \texttt{document.createElement()} JavaScript function to create a canvas.
 This meant that \texttt{createElement()} function needed to be altered for every web page, as well as listening for any actual \texttt{<canvas>} elements added to the page.
-Although it's simple enough to prevent access to the function, it isn't a satisfactory solution as it's a function that's used to add any HTML nodes to a website, so without it almost all non-static web pages break.
-Listing~\ref{lst:create-element} shows how this is achieved without breaking the function entirely.
+Although it is simple enough to prevent access to the function, it is not a satisfactory solution as it is a function that is used to add any HTML nodes to a website, so without it almost all non-static web pages break.
+Figure~\ref{lst:create-element} shows how this is achieved without breaking the function entirely.
 \texttt{createElement()} takes the name of the HTML element to create as an argument, so when a \texttt{<canvas>} element is desired, one passes \texttt{"canvas"} as an argument to the function.
 The function was re-written to check to see what the argument is, and in the case that a canvas is being created, the function will return an \texttt{undefined} object instead of a canvas.
 
-\begin{minipage}{\linewidth}
-\begin{lstlisting}[caption={The rewriting of the \texttt{createElement() function}}, label={lst:create-element}]
+\begin{figure}[h!]
+\begin{lstlisting}
 document.createElement = function(create) {
     return function() {
         var ret = create.apply(this, arguments);
@@ -222,24 +228,26 @@ document.createElement = function(create) {
     }
 }(document.createElement)
 \end{lstlisting}
-\end{minipage}
+\caption{The rewriting of the \texttt{createElement() function}}
+\label{lst:create-element}
+\end{figure}
 
 This successfully prevents canvas fingerprinting on websites in most cases.
-One case that this doesn't solve for as mentioned before is for when there's a canvas within an \texttt{<iframe>}.
-This is because the \texttt{MutationObserver} can't access the contents of an iframe that's added.
-For this reason, the app has to find iframes in the same way that it scans for \texttt{<canvas>} elements, but then has to do some processing after it's gathered them.
+One case that this does not solve for as mentioned before is for when there is a canvas within an \texttt{<iframe>}.
+This is because the \texttt{MutationObserver} can not access the contents of an iframe that is added to the node that it is monitoring.
+For this reason, the app has to find iframes in the same way that it scans for \texttt{<canvas>} elements, but then has to do some processing after it has gathered them.
 After acquiring the list of iframes that are added to the page, each one then needs to be scanned in the same way as the entire page was, so another \texttt{MutationObserver} is attached to the iframe, listening for any changes within.
 The plan was to do much the same method of breaking certain APIs of the \texttt{<canvas>} elements within the iframe.
 This method unfortunately does not work.
-If the iframe is loaded in from a different domain than the one that owns the parent webpage, then the parent webpage (and by consequence the script that's injected by the add-on) can not access the contents of the iframe.
+If the iframe is loaded in from a different domain than the one that owns the parent webpage, then the parent webpage (and by consequence the script that is injected by the add-on) can not access the contents of the iframe.
 This is due to the same-origin policy of web browsers \citep{same-origin}.
 
 The only solution that could be reached at the add-on level was too remove iframes from pages entirely.
 Needless to say this is not a usability-friendly solution for mitigating fingerprinting, as iframes are used a great deal on the web.
 This was implemented similarly to the method of finding canvas nodes, except instead of merely altering the APIs of the JavaScript objects, then entire object is deleted.
-After visiting a few websites it was clear that this wasn't a very good solution and isn't feasible as a long-term method of defence.
-\url{panopticlick.eff.org}, another online fingerprint checker can't successfully take a fingerprint when the add-on is activated with the iframe deletion code in effect.
-Although it may be seen as a positive thing that a fingerprinter doesn't work, this is not the case for other comparable fingerprinting websites.
-Many other sites simply don't function with the deletion of all of the iframe content on their pages.
+After visiting a few websites it was clear that this was not a very good solution and is not feasible as a long-term method of defence.
+\url{panopticlick.eff.org}, another online fingerprint checker can not successfully take a fingerprint when the add-on is activated with the iframe deletion code in effect.
+Although it may be seen as a positive thing that a fingerprinter does not work, this is not the case for other comparable fingerprinting websites.
+Many other sites simply do not function with the deletion of all of the iframe content on their pages.
 This is yet another reason why preventing fingerprinting at the add-on level is difficult.
 

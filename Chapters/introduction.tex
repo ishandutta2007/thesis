@@ -9,6 +9,8 @@ Companies in turn have started experimenting with new tracking methods that do n
 One of these methods is called `Machine Fingerprinting', a technique that observes as many characteristics of the user's web browser and machine as possible such as plugins installed, screen size, time zone and other such features \citep{audio-fingerprint}.
 Most of this information is given freely by the browser itself, while some is actively retrieved by the websites using these techniques.
 Once enough information is known about a browser, the user of that browser can be uniquely identified.
+This is done by gathering the characteristics of every visitor's browser, and comparing them to previous visitors' browsers.
+If a close match is found, the website then knows that the current visitor has been to the site before and can build up more information about that user's browsing habits.
 
 This project explores the techniques that are used for fingerprinting as well as what user information is available to these fingerprinters. Using this knowledge, a web extension was created that aims to obfuscate and to prevent the transmission of important characteristics.
 

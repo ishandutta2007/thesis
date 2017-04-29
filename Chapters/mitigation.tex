@@ -1,20 +1,21 @@
 \chapter{Mitigating Fingerprinting}
 
 To defend against fingerprinting, there are generally two go-to strategies.
-The first is randomisation, so the browser randomizes much of if not all of the information given to the fingerprinter so that every time that the user returns to a site, the fingerprinter will observe a new fingerprint and can't identify the user as someone who's returned to the site.
+The first is randomisation; the browser randomizes much of if not all of the information given to the fingerprinter so that every time that the user returns to a site, the fingerprinter will observe a new fingerprint and can not identify the user as someone who has returned to the site.
 This has been shown to be an effective method for mitigating fingerprinting \citep{privaricator}.
-However The Tor Project, the developers of the Tor Browser use a different strategy to combat fingerprinting, uniformity.
+However The Tor Project, the developers of the Tor Browser use a different strategy to combat fingerprinting, namely uniformity.
 This is because of the disadvantages associated with mitigating fingerpringing through randomisation \citep{tor-project}.
 
-It's difficult to evaluate just how effective randomisation is for preventing fingerprinting, as the fingerprinters can become more and more sophisticated and model the random values to create a more stable print.
-There are also many hardware characteristics that simply can't be randomised, since there are other methods that can be used in fingerprinting such as measuring clock skew which software can't detect or hinder \citep{skew}.
-In addition, randomisation introduces usability issues if the webpages depend on some of the information that's randomised, such to cause the site to change when revisited or refreshed.
+It is difficult to evaluate just how effective randomisation is for preventing fingerprinting, as the fingerprinters can become more and more sophisticated and model the random values to create a more stable print.
+There are also many hardware characteristics that simply can not be randomised, since there are other methods that can be used in fingerprinting such as measuring clock skew which software can not detect or hinder \citep{skew}.
+In addition, randomisation introduces usability issues if the webpages depend on some of the information that is randomised, such to cause the site to change when revisited or refreshed.
 
 \begin{figure}[h]
-\caption{Download pages are an example of pages which will cause usability problems when information such as platform is randomised. Here is a webpage that has detected Linux as the platform.}
 \includegraphics[scale=0.8]{steam}
 \centering
 \label{fig:steam}
+\caption{Download pages are an example of pages which will cause usability problems when information such as platform is randomised.
+Here is a webpage that has detected Linux as the platform.}
 \end{figure}
 
 There are also performance costs associated with randomisation; since the fingerprinting surface for a browser is quite large, it can cause the page to take significantly more time to load, and can exhaust the entropy pools of a computer, since true randomness is a resource on computers.

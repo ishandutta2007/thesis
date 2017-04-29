@@ -10,33 +10,33 @@ The other information is `actively' gathered through client-side JavaScript, Fla
 
 \subsection{Passively Gained Information}
 
-HTTP requests sent to websites offer a lot of information about the user.
+HTTP requests sent to websites offer much information about the user.
 The browser exposes this data by setting the values of certain request headers.
 The first relevant header is User Agent.
 This is a string which normally details what browser, platform and layout engine are being used, along with the versions of each (see Figure~\ref{fig:useragent-example} for an example).
 This is done so that websites can identify interoperability problems more easily \citep{useragent}.
-The user agent carries approximately 10.5 bits of identifying information on average, exposing quite a lot of information to visited websites \citep{useragententropy}.
+The user agent carries approximately 10.5 bits of identifying information on average, exposing a substantial amount of information to visited websites \citep{useragententropy}.
 
 \begin{figure}[h]
-\caption{Example of a user agent}
 \includegraphics[scale=0.8]{useragent-example}
 \centering
 \label{fig:useragent-example}
+\caption{Example of a user agent}
 \end{figure}
 
 The next relevant headers are the HTTP\_\_ACCEPT headers.
-These describe what MIMETYPE the browser is looking for, what compression formats it'll accept and what languages are desired.
+These describe what MIMETYPE the browser is looking for, what compression formats it will accept and what languages are desired.
 
 \begin{figure}[h]
-\caption{Example of HTTP\_\_ACCEPT headers}
 \includegraphics[scale=0.8]{http-accept-example}
 \centering
+\caption{Example of HTTP\_\_ACCEPT headers}
 \end{figure}
 
 As well as the previous headers, the browser will also send the date of the machine, including the timezone.
 This exposes both the timezone that the user is located in, and the time difference between the client machine and the server.
-There's one last header that's commonly used in fingerprinting, the DNT or `Do Not Track' header.
-This header is a binary value which indicates to a website if the user explicitly doesn't want to be tracked.
+There is one last header that is commonly used in fingerprinting, the DNT or `Do Not Track' header.
+This header is a binary value which indicates to a website if the user explicitly does not want to be tracked.
 
 All of this information is sent by default, exposing a huge amount of data about the user's browser already.
 Furthermore, much of this data is important for user experience on a lot of websites, such as websites with downloads for different operating systems checking the User Agent string to show a different download for different operating systems.
@@ -68,31 +68,31 @@ This information is explained in Table~\ref{tab:navigator-props}.
     \texttt{userAgent} & {Returns the User Agent of the browser} \\
     \hline
 \end{tabular}
-\caption{Table explaining what the relevant \texttt{window.navigator} properties reveal}
+\caption{Relevant \texttt{window.navigator} Properties}
 \label{tab:navigator-props}
 \end{table}
 
 The most significant of these properties in terms of bits of entropy exposed is the \texttt{plugins} property, since it varies quite significantly from browser to browser.
 It returns the list of plugins installed, usually paired with the version.
-However, this list is not fully enumerable, it can't be read as one would expect.
+However, this list is not fully enumerable, it can not be read as one would expect.
 To check if a user has a plugin installed, the fingerprinter must query the list with a specific plugin.
 In addition to the characteristics available through the \texttt{window.navigator}, there are other objects with information available in them, such as the \texttt{screen} object which contains the height and width of the user's display.
 
-Whereas these characteristics are convenient to access with JavaScript and readily supplied by the browser, there's also a huge amount of additional information which can be retrieved.
+Whereas these characteristics are convenient to access with JavaScript and readily supplied by the browser, there is also a huge amount of additional information which can be retrieved.
 The first of which is detecting what fonts the user has installed.
 
-Browsers and JavaScript don't supply any functions for retrieving the full list of fonts that the user has installed.
+Browsers and JavaScript do not supply any functions for retrieving the full list of fonts that the user has installed.
 There is however a method that allows the visited website to detect what fonts are installed by querying a large number of fonts one-by-one.
-The method works by creating a HTML \texttt{<span>} element and set the font to a font known to be installed.
+The method works by creating a HTML \texttt{<span>} element and to set the font to a font that is known to be installed.
 After this is done, JavaScript is used to change the CSS of the text so that the font family is different.
 The size of the \texttt{<span>} element will be different before and after the change if the probed font is installed, illustrated in Figure~\ref{fig:font-change}.
 A huge list of fonts can be tested for using this method, bypassing the inherent security feature of browsers not allowing full font enumeration.
 
 \begin{figure}[h]
-\caption{Showing the difference in \texttt{<span>} width when the font is changed}
 \includegraphics[scale=0.8]{font-change}
 \centering
 \label{fig:font-change}
+\caption{Difference in \texttt{<span>} width when the font is changed}
 \end{figure}
 
 More information is exposed with some of the JavaScript \texttt{math} library functions.
@@ -110,10 +110,10 @@ Depending on a number of characteristics, such as the installed GPU and the grap
 This information is also orthogonal to other fingerprint information, consistent, high-entropy, is transparent to the user and is easily obtainable.
 
 \begin{figure}[h]
-\caption{Example of a HTML5 \texttt{<canvas>} element}
 \fbox{\includegraphics[scale=0.8]{canvas-example}}
 \centering
 \label{fig:canvas-example}
+\caption{Example of a HTML5 \texttt{<canvas>} element}
 \end{figure}
 
 There's another similar method of fingerprinting called `audio fingerprinting'.
@@ -139,7 +139,7 @@ In addition, Flash reveals the platform's language which isn't available through
 \subsection{Effectiveness of Browser Fingerprinting}
 
 Given all of this information, one has to wonder just how useful it is in identifying browsers and consequently users.
-According to a study done by EFF using their Panopticlick fingerprinting tool, around 90\% of users who used the site to find their own fingerprint are unique \citep{browser-uniqueness}.
+According to a study done by the Electronic Frontier Foundation \citep{browser-uniqueness} using their Panopticlick fingerprinting tool, around 90\% of users who used the site to find their own fingerprint are unique.
 This includes iPhone and Android browsers which are a lot more difficult to fingerprint due to the small amount of plugins and fonts that are commonly installed or available.
 However, due to limited cookie options on these browsers they're often easier to track.
 The most identifying characteristics were found to be plugins and fonts, followed by User Agent, HTTP Accept headers and screen resolution.
