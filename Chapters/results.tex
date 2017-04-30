@@ -34,13 +34,17 @@ Unfortunately, this has a big impact on usability due to approximately 94.5\% of
 The other headers that could be altered are the HTTP\_ACCEPT headers, particularly the language header, and the date header.
 Once again changing these have consequences for the usability of many websites.
 
-\subsubsection{Navigator}
+\subsubsection{Navigator Properties}
 
+Similarly to the HTTP request headers, many of the \texttt{window.navigator} properties can be inferred using JavaScript such as \texttt{appName}, \texttt{appVersion}, \texttt{platform}.
+Due to this, the spoofing of these \texttt{navigator} properties is not done in the final version of the add-on.
+After much investigation, it does not seem possible to convincingly disguise a browser as different browser due to the significant number of differences between every browser API as well as there being a number of values and functions that can not be spoofed, such as the floating point difference in math functions discussed in chapter 3.
+Though simple fingerprinters may be tricked easily, due to the dynamic nature of web security simpler tricks such as spoofing \texttt{navigator} properties can be expected to not work for very long before websites improve the fingerprinting scripts they use, once again making it more difficult to mitigate.
 
-
-\subsubsection{Plugins}
-
-Text
+The only \texttt{navigator} property that seems promising to spoof is the \texttt{plugins} property.
+The add-on successfully hides all installed plugins apart from Flash due to it being set to `click-to-play', however on \url{browserprint.info}'s fingerprint checker, hiding the plugins installed on the test computer greatly increased the uniqueness score of the browser.
+Although this isn't a fully positive result, it does show promise as the list of plugins could potentially be spoofed to the most commonly installed plugins.
+More research is required to determine what the most commonly installed plugins are across different browsers and browser versions, as this seemed too large an undertaking for the scope of the project.
 
 \subsubsection{Font Fingerprinting}
 
