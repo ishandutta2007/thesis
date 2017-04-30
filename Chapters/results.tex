@@ -20,17 +20,23 @@ This chapter will discuss the various parts of the browser that expose informati
     \texttt{Canvas Fingerprint} & {0.068\%} & {2.729\%} \\
     \hline
 \end{tabular}
-\caption{Frequency of browser characteristics without protection vs. with protection}
+\caption{Frequency of browser characteristics without protection vs.\ with protection}
 \label{tab:results}
 \end{table}
 
-\subsubsection{HTTP Request}
+\subsubsection{HTTP Request Headers}
 
-
+Although in an early stage of development, a few of the HTTP request headers were edited, after further research it was clear that it was not effective for more complex fingerprinters.
+The spoofing of the User Agent does not work because fingerprinters are able to query various JavaScript functions and objects available across different browsers and through process of elimination deduce what browser, browser version and platform are being used.
+An example of this is querying for the \texttt{ActiveXObject} in the \texttt{window} object, which is available only on the Internet Explorer web browser \citep{activeX}.
+The only defence against this is to disable JavaScript altogether.
+Unfortunately, this has a big impact on usability due to approximately 94.5\% of all websites use JavaScript \citep{w3-javascript}.
+The other headers that could be altered are the HTTP\_ACCEPT headers, particularly the language header, and the date header.
+Once again changing these have consequences for the usability of many websites.
 
 \subsubsection{Navigator}
 
-Text
+
 
 \subsubsection{Plugins}
 
