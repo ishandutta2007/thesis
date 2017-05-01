@@ -7,7 +7,7 @@ WebExtensions have two primary types of script, one is a background script which
 The chosen method of mitigating fingerprinting was to use a combination of Firefox settings and preferences and the add-on itself to mitigate fingerprinting, as some of the settings themselves were vital to disabling fingerprinting.
 The project originally aimed to do several things, outlined below.
 
-\subsection{Alter Passive Properties}
+\section{Alter Passive Properties}
 
 This first feature of the application was to spoof passively transmitted properties in HTTP requests, such as User Agent.
 The WebExtension API contains the \texttt{webRequest} object \citep{webRequest}.
@@ -56,7 +56,7 @@ For this reason, the final iteration of the add-on does not alter the User Agent
 In addition to this, the timezone header is not altered because of problems with usability for sites that depend on accurate timing information.
 These are some of the first problems that were encountered, but it was neither the last time the question came up of ~`Is concealing or spoofing this characteristic doing more harm than good?' nor was it the last time that balance of usability and privacy was considered.
 
-\subsection{\texttt{window.navigator} Properties}
+\section{\texttt{window.navigator} Properties}
 
 Many of the \texttt{navigator} properties are related to the platform and browser that are being used, and often provide a method to retrieve this information without parsing the User Agent string.
 These properties were altered in an early version of the add-on, but just like altering the User Agent in the HTTP request, this makes the user more unique rather than less unique.
@@ -81,7 +81,7 @@ Object.defineProperties(navigator, {
 \label{lst:plugins}
 \end{figure}
 
-\subsection{Flash Prevention}
+\section{Flash Prevention}
 
 Removing or at the very least limiting Flash usage was a key part of the project, since it reveals so much information to fingerprinters.
 Luckily Firefox and other commonly used browsers supply preferences for disabling Flash, on Firefox users can disable it altogether or change it to a `click-to-play' setting, where if a page uses Flash an alert will appear asking the user if they'd like to grant the site permission to use Flash once, forever, or to ignore the request.
@@ -99,7 +99,7 @@ With the decline in use of Flash (illustrated in Figure~\ref{fig:flash-usage}) s
 \label{fig:flash-usage}
 \end{figure}
 
-\subsection{Font Fingerprinting}
+\section{Font Fingerprinting}
 
 Prevention of font fingerprinting was another important part of the project.
 Font fingerprinting through Flash had already been prevented through disabling it altogether, which left the problem of how to stop font fingerprinting through JavaScript.
@@ -120,7 +120,7 @@ Thankfully version 52 of Firefox released on the 7th of March 2017.
 In this version of Firefox, a new feature was added that allows users to define a list of `whitelisted' fonts which Firefox will use as if they are the only fonts installed on the system.
 This allowed me to change a setting in Firefox's config files, effectively limiting the system fonts to a select few.
 
-\subsection{Prevent Canvas Fingerprinting}
+\section{Prevent Canvas Fingerprinting}
 
 Preventing Canvas fingerprinting was the most difficult part of the project by far.
 This is due to a number of problems and roadblocks that materialised during the development of the add-on.

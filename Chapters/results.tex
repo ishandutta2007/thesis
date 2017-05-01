@@ -25,7 +25,7 @@ This chapter will discuss the various parts of the browser that expose informati
 \label{tab:results}
 \end{table}
 
-\subsubsection{HTTP Request Headers}
+\section{HTTP Request Headers}
 
 Although in an early stage of development, a few of the HTTP request headers were edited, after further research it was clear that it was not effective for more complex fingerprinters.
 The spoofing of the User Agent does not work because fingerprinters are able to query various JavaScript functions and objects available across different browsers and through process of elimination deduce what browser, browser version and platform are being used.
@@ -35,7 +35,7 @@ Unfortunately, this has a big impact on usability due to approximately 94.5\% of
 The other headers that could be altered are the HTTP\_ACCEPT headers, particularly the language header, and the date header.
 Once again changing these have consequences for the usability of many websites.
 
-\subsubsection{Navigator Properties}
+\section{Navigator Properties}
 
 Similarly to the HTTP request headers, many of the \texttt{window.navigator} properties can be inferred using JavaScript such as \texttt{appName}, \texttt{appVersion}, \texttt{platform}.
 Due to this, the spoofing of these \texttt{navigator} properties is not done in the final version of the add-on.
@@ -47,21 +47,21 @@ The add-on successfully hides all installed plugins apart from Flash due to it b
 Although this is not an entirely positive result, it does show promise as the list of plugins could potentially be spoofed to return some of the most commonly installed plugins.
 More research is required to determine what these commonly installed plugins are across different browsers and browser versions, as this was too large an undertaking for the scope of the project.
 
-\subsubsection{Font Fingerprinting}
+\section{Font Fingerprinting}
 
 Changing the whitelist of system fonts was an easy method of changing what system fonts fingerprinters detect.
 However, it was difficult to ascertain a set of fonts that reduced the browser's uniqueness score as the information for what fonts are most common for different operating systems is not readily available, and similarly to the list of plugins, would require a significant amount of further research.
 There is potential for the add-on to developed further and to use randomisation solely for the font list as it is one of the biggest sources of entropy in a browser fingerprint, and is a characteristic that one would not expect to have significant changes very often.
 The ease of altering the whitelist is hugely beneficial to mitigating fingerprinting, and is a good sign that browser developers are actively taking steps to combat fingerprinting.
 
-\subsubsection{Flash}
+\section{Flash}
 
 As shown in~\ref{tab:results}, disabling Flash yielded a huge decrease in uniqueness for the browser.
 It is important to note that the characteristics were not all orthogonal to others gained by fingerprinting.
 For example, the browser's platform can also be gained through the \texttt{window.navigator}, albeit with less information.
 It is still clear to see that Flash is one of the most important (and simplest) steps to mitigating fingerprinting, usability issues aside.
 
-\subsection{Canvas Fingerprinting}
+\section{Canvas Fingerprinting}
 
 Blocking canvas fingerprinting resulted in a value for the fingerprint that was roughly 4,000\% more common than when a canvas fingerprint could be retrieved.
 This seems like a huge improvement in how common the browser appears, though it is very difficult to determine if this value being shared with roughly 2.7\% of other browsers is enough of an improvement to make a significant difference in the uniqueness of the entire fingerprint.

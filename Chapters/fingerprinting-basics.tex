@@ -8,7 +8,7 @@ This way, a match can be found and the user can be uniquely identified.
 Some of the information is gained `passively' as it is sent in the HTTP request.
 The other information is `actively' gathered through client-side JavaScript, Flash and Java execution.
 
-\subsection{Passively Gained Information}
+\section{Passively Gained Information}
 
 HTTP requests sent to websites offer much information about the user.
 The browser exposes this data by setting the values of certain request headers.
@@ -42,12 +42,12 @@ All of this information is sent by default, exposing a huge amount of data about
 Furthermore, much of this data is important for user experience on a lot of websites, such as websites with downloads for different operating systems checking the User Agent string to show a different download for different operating systems.
 This means that spoofing the data to protect the user's privacy comes with a common tradeoff, user experience vs.\ privacy.
 
-\subsection{Actively Gained Information}
+\section{Actively Gained Information}
 
 As well as the information that's sent to websites by the browser by default, there's also a huge amount of information that can be gleamed through client-side execution of JavaScript, Flash and Java.
 One of the most reliable methods of mitigating fingerprinting is simply disabling all three of these, however most popular websites use JavaScript in some capacity and will either break the website entirely or result in a poor user experience \citep{disable-js}.
 
-\subsubsection{Information Gained Using JavaScript}
+\subsection{Information Gained Using JavaScript}
 
 JavaScript exposes a huge amount of information to fingerprinters.
 A lot of the information is stored in the \texttt{window.navigator} JavaScript object which is available to any website that a user visits with JavaScript enabled.
@@ -123,7 +123,7 @@ It also reveals a number of other characteristics such as sample rate, max chann
 
 It's also possible to fingerprint the user by detecting the timing of keystrokes, since many users will have different typing patterns \citep{keystrokes}.
 
-\subsubsection{Information Gained Using Flash}
+\subsection{Information Gained Using Flash}
 
 The Flash plugin is a large source of browser information for fingerprinters.
 Through Flash, the fingerprinter has access to the list of plugins the user has installed.
@@ -136,7 +136,7 @@ This list of fonts can also be retrieved using a Java Applet.
 Flash also exposes platform information, showing more information than the \texttt{window.navigator} JavaScript object as it shows the major and minor versions of the operating system instead of just the name and architecture.
 In addition, Flash reveals the platform's language which isn't available through common browser APIs (Internet Explorer being the exception).
 
-\subsection{Effectiveness of Browser Fingerprinting}
+\section{Effectiveness of Browser Fingerprinting}
 
 Given all of this information, one has to wonder just how useful it is in identifying browsers and consequently users.
 According to a study done by the Electronic Frontier Foundation \citep{browser-uniqueness} using their Panopticlick fingerprinting tool, around 90\% of users who used the site to find their own fingerprint are unique.
