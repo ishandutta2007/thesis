@@ -25,7 +25,12 @@ We suspect that the involvement of browser developers is the only feasible appro
 
 \section{Future Work}
 
-- prevention of audio fp in add-on
+The area of machine fingerprinting easily lends itself to further work.
+With background research on machine fingerprinting and the groundwork of an add-on developed, the add-on could be further developed to try to improve it.
+The add-on could be improved to better disable canvas fingerprinting so that usability is not affected in cases where the website only needs to draw to the \texttt{<canvas>} rather than all use cases.
+The mitigation of audio fingerprinting could also be developed and integrated into the add-on, along with research into how to effectively use the font whitelist that Firefox provides to combat fingerprinting.
 
-- observe fingerprinting `from the other side' so that more insight can be gained
+Another possibility for future work is to further research how fingerprinters build their database of users, and the methods available for handling small changes to the fingerprint.
+This could be done by using existing fingerprinting libraries to fingerprint a large number of users and to investigate the best methods for organising the dataset.
+Armed with this information, someone trying to mitigate fingerprinting could more easily develop a stronger defence against it, using the research as a basis for their application.
 
