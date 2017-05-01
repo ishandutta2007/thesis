@@ -3,9 +3,10 @@
 There were are some promising insights gained over the course of the project.
 Table~\ref{tab:results} indicates the difference in how common certain browser characteristics are when Flash and Canvas Fingerprinting are available compared to when they are disabled.
 A larger percentage indicates a more common value for a particular characteristic.
-A Sony Vaio laptop with the OpenSuse Linux distribution was used for testing, running Firefox as the browser of choice.
-The figures are calculated using \url{browserprint.info}, which provides how common each fingerprint characteristic is relative to all other users that have retrieved their fingerprint using the service.
+The presented figures are calculated using \url{browserprint.info}, which provides how common each fingerprint characteristic is relative to all other users that have retrieved their fingerprint using the service.
 The other techniques that were used were not immediately successful and either will not help to mitigate fingerprinting or require further research and development to improve.
+A Sony Vaio laptop with the OpenSuse Linux distribution was used for testing, running Firefox as the browser of choice.
+With the add-on and recommended settings, fingerprinting sites still found the test browser's fingerprint unique.
 This chapter will discuss the various parts of the browser that expose information, the methods used to try to restrict them and how successful they were.
 
 \begin{table}[h!]
@@ -69,8 +70,4 @@ The \url{browserprint.info} fingerprinting test has a sample size of roughly 32,
 One can assume that the 2.7\% figure would be inflated on \url{browserprint.info} when compared to fingerprints retrieved from an average website, when considering that with a higher proportion of privacy aware users, there would be a higher proportion of users that would have JavaScript disabled.
 For these users, the fingerprinter would also not be able to retrieve a canvas fingerprint.
 Viewed in isolation, the decrease in uniqueness with the canvas fingerpringing defence is a good result, but once again the question of `Is it enough of an improvement to make a difference?' is asked and the answer is not at all obvious.
-
-\subsubsection{Is there a reasonable way to fight it as a user?}
-
-Text
 
