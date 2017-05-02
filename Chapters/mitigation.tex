@@ -8,14 +8,15 @@ This is because of the disadvantages associated with mitigating fingerpringing t
 
 It is difficult to evaluate just how effective randomisation is for preventing fingerprinting, as the fingerprinters can become more and more sophisticated and model the random values to create a more stable print.
 There are also many hardware characteristics that simply can not be randomised, since there are other methods that can be used in fingerprinting such as measuring clock skew which software can not detect or hinder \citep{skew}.
-In addition, randomisation introduces usability issues if the webpages depend on some of the information that is randomised, such to cause the site to change when revisited or refreshed.
+In addition, randomisation introduces usability issues if the webpages depend on some of the information that is randomised.
+An example of this would be a download page that displays the download for the user's platform, shown in Figure~\ref{fig:steam}.
+The randomisation may also cause sites to change when revisited or refreshed.
 
 \begin{figure}[h]
 \includegraphics[scale=0.8]{steam}
 \centering
 \label{fig:steam}
-\caption{Download pages are an example of pages which will cause usability problems when information such as platform is randomised.
-Here is a webpage that has detected Linux as the platform.}
+\caption{A webpage that has detected Linux as the platform.}
 \end{figure}
 
 There are also performance costs associated with randomisation; since the fingerprinting surface for a browser is quite large, it can cause the page to take significantly more time to load, and can exhaust the entropy pools of a computer, since true randomness is a resource on computers.
