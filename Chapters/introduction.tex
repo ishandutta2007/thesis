@@ -3,7 +3,7 @@
 HTTP cookies are a small piece of text that a browser sends to a website to identify itself.
 Cookies were originally used so that websites could track small pieces of state, such as the contents of a user's shopping cart.
 They gained popularity with marketing and advertising companies as a way to track their users' browsing habits.
-Both first-party and third-party cookies are used, first-party cookies being cookies set by the visited website itself, and third-party cookies being set by another website that's embedded in the visited site.
+Both first-party and third-party cookies are used, first-party cookies being cookies set by the visited website itself, and third-party cookies being set by another website that is embedded in the visited site.
 These cookies are not a foolproof method of tracking however, as within a month approximately 28\% and 37\% of users will clear a new first-party cookie and a new third-party cookie respectively \citep{comScore-cookies}.
 Companies in turn have started experimenting with new tracking methods that do not require cookies to identify users.
 
@@ -11,9 +11,10 @@ One of these methods is called `Machine Fingerprinting', a technique that observ
 Most of this information is given freely by the browser itself, while some is actively retrieved by the websites using these techniques.
 Once enough information is known about a browser, the user of that browser can be uniquely identified.
 This is done by gathering the characteristics of every visitor's browser, and comparing them to previous visitors' browsers.
-If a close match is found, the website then knows that the current visitor has been to the site before and can build up more information about that user's browsing habits.
+If a close match is found, the website can then assume that the current visitor has been to the site before and can build up more information about that user's browsing habits.
 
-This project explores the techniques that are used for fingerprinting as well as what user information is available to these fingerprinters. Using this knowledge, a web extension was created that aims to obfuscate and to prevent the transmission of important characteristics.
+This project explores the techniques that are used for fingerprinting as well as determining what user information is available to these fingerprinters.
+Using this knowledge, a web extension was created that aims to obfuscate and to prevent the transmission of important characteristics.
 
 This report outlines the background information required to understand why fingerprinting is being used as a method of identification and the fundamentals of how browser fingerprinting works.
 It then explores the possible strategies that can be used to mitigate fingerprinting, and the design and implementation of a browser extension that attempts to do just this, along with the problems and difficulties encountered during the course of the project.

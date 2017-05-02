@@ -126,7 +126,6 @@ Preventing Canvas fingerprinting was the most difficult part of the project by f
 This is due to a number of problems and roadblocks that materialised during the development of the add-on.
 The original plan was for the add-on to simply listen to the webpage for changes once it begins to load, and when the page changes, scan any added nodes for any \texttt{<canvas>} elements, and change the objects themselves to restrict the relevant APIs.
 This is essentially what the final product does, though it is not as simple as initially thought.
-
 The main functions that need to be blocked are explained in Table~\ref{tab:canvas-methods}.
 
 \begin{table}[h!]

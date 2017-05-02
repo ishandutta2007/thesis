@@ -1,12 +1,12 @@
 \chapter{Mitigating Fingerprinting}
 
 To defend against fingerprinting, there are generally two go-to strategies.
-The first is randomisation; the browser randomizes much of if not all of the information given to the fingerprinter so that every time that the user returns to a site, the fingerprinter will observe a new fingerprint and can not identify the user as someone who has returned to the site.
+The first is randomisation; the browser randomises much of if not all of the information given to the fingerprinter so that every time that the user returns to a site, the fingerprinter will observe a new fingerprint and can not identify the user as someone who has returned to the site.
 This has been shown to be an effective method for mitigating fingerprinting \citep{privaricator}.
 However The Tor Project, the developers of the Tor Browser use a different strategy to combat fingerprinting, namely uniformity.
-This is because of the disadvantages associated with mitigating fingerpringing through randomisation \citep{tor-project}.
+This is because of the disadvantages associated with mitigating fingerpringing through randomisation.
 
-It is difficult to evaluate just how effective randomisation is for preventing fingerprinting, as the fingerprinters can become more and more sophisticated and model the random values to create a more stable print.
+It is difficult to evaluate just how effective randomisation is for preventing fingerprinting, as the fingerprinters can become more and more sophisticated and model the probabilities of these random values to create a more stable print \citep{tor-project}.
 There are also many hardware characteristics that simply can not be randomised, since there are other methods that can be used in fingerprinting such as measuring clock skew which software can not detect or hinder \citep{skew}.
 In addition, randomisation introduces usability issues if the webpages depend on some of the information that is randomised.
 An example of this would be a download page that displays the download for the user's platform, shown in Figure~\ref{fig:steam}.
@@ -19,10 +19,11 @@ The randomisation may also cause sites to change when revisited or refreshed.
 \caption{A webpage that has detected Linux as the platform.}
 \end{figure}
 
-There are also performance costs associated with randomisation; since the fingerprinting surface for a browser is quite large, it can cause the page to take significantly more time to load, and can exhaust the entropy pools of a computer, since true randomness is a resource on computers.
+There are also performance costs associated with randomisation; since the fingerprinting surface for a browser is quite large, it can cause the page to take significantly more time to load.
+It can also exhaust the entropy pools of a computer, since true randomness is a resource on computers.
 Finally, this randomisation process can actually expose another fingerprinting characteristic, as the generation of the random values will take time, and could be measured.
 
 In place of randomisation, the Tor Browser uses the strategy of uniformity to mitigate fingerprinting.
 The theory behind it is that every browser looks identical or close to identical, the fingerprinting surface is too small to tell users apart and individually identify a user.
-To do this, as many of the previously explained characteristics as possible need to be set to values that give away as little information as possible by returning common values or blocking access altogether (although care needs to be taken to not unintentionally make the browser more unique by restricting API access).
+To achieve this, as many of the previously explained characteristics as possible need to be set to values that give away very little information by returning common values or blocking access altogether (although care needs to be taken to not unintentionally make the browser more unique by restricting API access).
 

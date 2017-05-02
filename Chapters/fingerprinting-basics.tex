@@ -6,13 +6,13 @@ When the user returns to the site, the browser characteristics can be checked an
 This way, a match can be found and the user can be uniquely identified.
 
 Some of the information is gained `passively' as it is sent in the HTTP request.
-The other information is `actively' gathered through client-side JavaScript, Flash and Java execution.
+The other information is `actively' gathered through client-side execution of JavaScript, Flash and Java.
 
 \section{Passively Gained Information}
 
 HTTP requests sent to websites offer much information about the user.
 The browser exposes this data by setting the values of certain request headers.
-The first relevant header is User Agent.
+The first relevant header is the User Agent.
 This is a string which normally details what browser, platform and layout engine are being used, along with the versions of each (see Figure~\ref{fig:useragent-example} for an example).
 This is done so that websites can identify interoperability problems more easily \citep{useragent}.
 The user agent carries approximately 10.5 bits of identifying information on average, exposing a substantial amount of information to visited websites \citep{useragententropy}.
@@ -25,7 +25,7 @@ The user agent carries approximately 10.5 bits of identifying information on ave
 \end{figure}
 
 The next relevant headers are the HTTP\_\_ACCEPT headers.
-These describe what MIMETYPE the browser is looking for, what compression formats it will accept and what languages are desired.
+These describe what MIMETYPE the browser is looking for, what compression formats it will accept, and what languages are desired.
 
 \begin{figure}[h]
 \includegraphics[scale=0.8]{http-accept-example}
@@ -33,13 +33,14 @@ These describe what MIMETYPE the browser is looking for, what compression format
 \caption{Example of HTTP\_\_ACCEPT headers}
 \end{figure}
 
-As well as the previous headers, the browser will also send the date of the machine, including the timezone.
+In addition to the previous headers, the browser will also send the date of the machine, including the timezone.
 This exposes both the timezone that the user is located in, and the time difference between the client machine and the server.
 There is one last header that is commonly used in fingerprinting, the DNT or `Do Not Track' header.
 This header is a binary value which indicates to a website if the user explicitly does not want to be tracked.
 
-All of this information is sent by default, exposing a huge amount of data about the user's browser already.
-Furthermore, much of this data is important for user experience on a lot of websites, such as websites with downloads for different operating systems checking the User Agent string to show a different download for different operating systems.
+All of this information is sent by default, exposing a huge amount of data about the user's browser already without any effort from the website itself.
+Furthermore, much of this data is important for user experience on many websites.
+An example of this would be websites with downloads available for multiple operating systems checking the User Agent string to offer a specific download depending on the visitor's operating system.
 This means that spoofing the data to protect the user's privacy comes with a common tradeoff, user experience vs.\ privacy.
 
 \section{Actively Gained Information}
@@ -81,10 +82,10 @@ In addition to the characteristics available through the \texttt{window.navigato
 Whereas these characteristics are convenient to access with JavaScript and readily supplied by the browser, there is also a huge amount of additional information which can be retrieved.
 The first of which is detecting what fonts the user has installed.
 
-Browsers and JavaScript do not supply any functions for retrieving the full list of fonts that the user has installed.
+Browser JavaScript APIs do not supply any functions for retrieving the full list of fonts that the user has installed.
 There is however a method that allows the visited website to detect what fonts are installed by querying a large number of fonts one-by-one.
-The method works by creating a HTML \texttt{<span>} element and to set the font to a font that is known to be installed.
-After this is done, JavaScript is used to change the CSS of the text so that the font family is different.
+The method works by creating a HTML \texttt{<span>} element and setting the font to a font that is known to be installed.
+After this is done, JavaScript is used to alter the CSS of the \texttt{<span>} element and change the text's font.
 The size of the \texttt{<span>} element will be different before and after the change if the probed font is installed, illustrated in Figure~\ref{fig:font-change}.
 A huge list of fonts can be tested for using this method, bypassing the inherent security feature of browsers not allowing full font enumeration.
 
@@ -103,11 +104,12 @@ This basic test is one of the methods fingerprinters can use to check if a brows
 
 There are two more important methods of gaining information about the browser through JavaScript, both similar in their approach.
 The first is called `canvas fingerprinting'.
-This works by using the \texttt{canvas} HTML element on a webpage.
-A \texttt{canvas} element is a box on a webpage that text and graphics can be drawn to.
+This works by using the \texttt{<canvas>} HTML element on a webpage.
+A \texttt{<canvas>} element is a box on a webpage that text and graphics can be drawn to.
 This rendered data can then be retrieved and sent back to the server.
-Depending on a number of characteristics, such as the installed GPU and the graphics card drivers, this data will render slightly differently, exposing more information as a result \citep{canvas-fingerprint}.
-This information is also orthogonal to other fingerprint information, consistent, high-entropy, is transparent to the user and is easily obtainable.
+Depending on a number of machine characteristics, such as the installed GPU and the graphics card drivers, this data will render slightly differently, exposing more information as a result \citep{canvas-fingerprint}.
+This information is also orthogonal to other fingerprint information, meaning that the information it provides does not overlap with any other browser or machine characteristic.
+It is also consistent, of high-entropy, is transparent to the user, and is easily obtainable.
 
 \begin{figure}[h]
 \fbox{\includegraphics[scale=0.8]{canvas-example}}
@@ -118,19 +120,19 @@ This information is also orthogonal to other fingerprint information, consistent
 
 There's another similar method of fingerprinting called `audio fingerprinting'.
 This uses the \texttt{AudioContext} browser API to generate and modify an audio signal.
-This audio signal can be retrieved and measured, and once again differences between browsers are evident when comparing generated signals across different browsers.
+This audio signal can be retrieved and stored, and once again, differences between browsers are evident when comparing these generated signals across different browsers.
 It also reveals a number of other characteristics such as sample rate, max channel count and number of inputs and outputs \citep{audio-fingerprint}.
 
-It's also possible to fingerprint the user by detecting the timing of keystrokes, since many users will have different typing patterns \citep{keystrokes}.
+It's also possible to fingerprint the user by detecting the timing of keystrokes, due to the variance of different users' typing speed and patterns \citep{keystrokes}.
 
 \subsection{Information Gained Using Flash}
 
 The Flash plugin is a large source of browser information for fingerprinters.
 Through Flash, the fingerprinter has access to the list of plugins the user has installed.
-Unlike the \texttt{window.navigator} JavaScript object which also supplies the list of installed plugins, accessing the list through Flash fully enumerates the entire list and is fully readable, making it much easier to see the installed plugins.
-As well as fully enumerating plugins, it also fully enumerates fonts.
-Whereas in JavaScript, each font has to be queried individually, effectively limiting the number of fonts a fingerprinter can quickly check, Flash returns the full list of fonts that are installed on the system.
-This makes it far easier to read the list of fonts and generally will give a much more in-depth list than probing for them using JavaScript.
+Unlike the \texttt{window.navigator} JavaScript object which also supplies the list of installed plugins, accessing the list through Flash returns installed plugins as a simple list that can be read without any complications, making it much easier to see the installed plugins.
+As well as enumerating plugins, it also fully enumerates fonts.
+Whereas in JavaScript, each font has to be queried individually, effectively limiting the number of fonts a fingerprinter can quickly check due to the performance cost of checking each font, Flash returns the full list of fonts that are installed on the system.
+This makes it far easier to read the list of fonts and will generally give a much more in-depth list than probing for them using JavaScript.
 This list of fonts can also be retrieved using a Java Applet.
 
 Flash also exposes platform information, showing more information than the \texttt{window.navigator} JavaScript object as it shows the major and minor versions of the operating system instead of just the name and architecture.
@@ -138,10 +140,10 @@ In addition, Flash reveals the platform's language which isn't available through
 
 \section{Effectiveness of Browser Fingerprinting}
 
-Given all of this information, one has to wonder just how useful it is in identifying browsers and consequently users.
+Given all of this information, one has to wonder just how useful browser fingerptinging is for uniquely identifying browsers and consequently users.
 According to a study done by the Electronic Frontier Foundation \citep{browser-uniqueness} using their Panopticlick fingerprinting tool, around 90\% of users who used the site to find their own fingerprint are unique.
-This includes iPhone and Android browsers which are a lot more difficult to fingerprint due to the small amount of plugins and fonts that are commonly installed or available.
-However, due to limited cookie options on these browsers they're often easier to track.
+This includes iPhone and Android browsers which are a lot more difficult to fingerprint due to the small variation in plugins and fonts installed on mobile devices.
+However, due to limited cookie options on these browsers they can often be easy to track using cookies.
 The most identifying characteristics were found to be plugins and fonts, followed by User Agent, HTTP Accept headers and screen resolution.
-The 90\% figure may also be lower than the expected result for a more global sample because the type of user that would visit EFF's website are far more likely to already be privacy aware and use common browsers and plugins.
+The 90\% figure may also be lower than the expected result for a more global sample because the type of user that would visit EFF's website are far more likely than an average user to already be privacy aware and use common browsers and plugins.
 

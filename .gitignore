@@ -8,4 +8,5 @@
 *.fdb_latexmk
 .fls
 report.pdf
+report-with-corrections.pdf
 
