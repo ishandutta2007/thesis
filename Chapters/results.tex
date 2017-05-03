@@ -6,8 +6,17 @@ A larger percentage indicates a more common value for a particular characteristi
 The presented figures are calculated using \url{browserprint.info}, which provides how common each fingerprint characteristic is relative to all other users that have retrieved their fingerprint using the service.
 The other techniques that were used were not immediately successful and either will not help to mitigate fingerprinting or require further research and development to improve.
 A Sony Vaio laptop with the OpenSuse Linux distribution was used for testing, running Firefox as the browser of choice.
-With the add-on and recommended settings, fingerprinting sites still found the test browser's fingerprint unique.
-This chapter will discuss the various parts of the browser that expose information, the methods used to try to restrict them and how successful they were.
+
+With the add-on and recommended settings, both \url{panopticlick.eff.org} and \url{browserprint.info} found the test browser's fingerprint to be a unique one.
+Panopticlick states how many bits of identifying information each characteristic exposes, adding up to a total of 63.75 bits for the test computer when the add-on was not used.
+This is calculated with $\log_{2}x$, where $x$ is the total number of fingerprints taken divided by the number of fingerprints that share this value (including the new fingerprint).
+This total also discounts the User Agent (as there is an overlap between User Agent and other properties such as the platform) and excludes Flash fingerprinting information.
+When the add-on and font whitelist are enabled, the bits of identifying information drops to 50.24 bits.
+This is not a bad result when considering that an increase of one bit doubles the amount of information exposed as the increase is exponential.
+However, this is still very far above the minimum number of bits required to uniquely map Panopticlick's sample size.
+For their 233,722 fingerprints they had retrieved at the time of this test (3 May 2017), assuming every fingerprint is unique, they only require 17.834 bits of identifying information from every browser ($\log_{2}233722$).
+
+The remainder of this chapter will discuss the various parts of the browser that expose information, the methods used to try to restrict them and how successful they were.
 
 \begin{table}[h!]
 \centering
@@ -18,6 +27,8 @@ This chapter will discuss the various parts of the browser that expose informati
     \texttt{Screen Size (Flash)} & {10.5\%} & {38.46\%} \\ \hline
     \texttt{Language (Flash)} & {25.38\%} & {38.46\%} \\ \hline
     \texttt{System Fonts (Flash)} & {0.022\%} & {38.46\%} \\ \hline
+    \texttt{Plugins} & {0.621\%} & {0.056\%} \\ \hline
+    \texttt{System Fonts (JavaScript)} & {0.08\%} & {0.03\%} \\ \hline
     \texttt{Canvas Fingerprint} & {0.068\%} & {2.729\%} \\
     \hline
 \end{tabular}
@@ -44,6 +55,7 @@ Though simple fingerprinters may be tricked easily, due to the dynamic nature of
 
 The only \texttt{navigator} property that seems promising to spoof is the \texttt{plugins} property.
 The add-on successfully hides all installed plugins apart from Flash due to it being set to `click-to-play', however on \url{browserprint.info}'s fingerprint checker, hiding the plugins installed on the test computer greatly increased how unique the browser was.
+The percentage of users with the same plugins decreased from 0.621\% to 0.056\%, clearly a diminished figure that makes the fingerprint more unique.
 Although this is not an entirely positive result, it does show promise as the list of plugins could potentially be spoofed to return some of the most commonly installed plugins.
 More research is required to determine what these commonly installed plugins are across different browsers and browser versions, as this was too large an undertaking for the scope of the project.
 
@@ -51,6 +63,9 @@ More research is required to determine what these commonly installed plugins are
 
 Changing the whitelist of system fonts was an easy method of changing what system fonts fingerprinters detect.
 However, it was difficult to ascertain a set of fonts that reduced the browser's uniqueness score as the information for what fonts are most common for different operating systems is not readily available, and similarly to the list of plugins, would require a significant amount of further research.
+After changing the whitelist to contain a subset of the fonts that could be gleamed by the fingerprinter through JavaScript, the percentage of users with the same set of fonts decreased from 0.08\% to 0.03\%.
+After experimenting with this for some time it was clear that the solution was not one that could be reached easily through trial and error.
+
 There is potential for the add-on to developed further and to use randomisation solely for the font list as it is one of the biggest sources of entropy in a browser fingerprint, and is a characteristic that one would not expect to have significant changes very often.
 The ease of altering the whitelist is hugely beneficial to mitigating fingerprinting, and is a good sign that browser developers are beginning to take steps towards combatting fingerprinting.
 
