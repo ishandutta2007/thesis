@@ -4,13 +4,12 @@ There were are some promising insights gained over the course of the project.
 Table~\ref{tab:results} indicates the difference in uniqueness for various browser characteristics when no fingerprinting defenses are enabled compared to when the add-on and recommended settings are enabled.
 A larger percentage indicates a more common value for a particular characteristic.
 The presented figures are calculated using \url{browserprint.info}, which provides how common each fingerprint characteristic is relative to all other users that have retrieved their fingerprint using the service.
-The other techniques that were used were not immediately successful and either will not help to mitigate fingerprinting or require further research and development to improve.
 A Sony Vaio laptop with the OpenSuse Linux distribution was used for testing, running Firefox as the browser of choice.
 
 With the add-on and recommended settings, both \url{panopticlick.eff.org} and \url{browserprint.info} found the test browser's fingerprint to be a unique one.
 Panopticlick states how many bits of identifying information each characteristic exposes, adding up to a total of 63.75 bits for the test computer when the add-on was not used.
 This is calculated with $\log_{2}x$, where $x$ is the total number of fingerprints taken divided by the number of fingerprints that share this value (including the new fingerprint).
-This total also discounts the User Agent (as there is an overlap between User Agent and other properties such as the platform) and excludes Flash fingerprinting information.
+This total also does not include the User Agent (as there is an overlap between the information provided by the User Agent and other properties such as the platform) and excludes Flash fingerprinting information.
 When the add-on and font whitelist are enabled, the bits of identifying information drops to 50.24 bits.
 This is not a bad result when considering that an increase of one bit doubles the amount of information exposed as the increase is exponential.
 However, this is still very far above the minimum number of bits required to uniquely map Panopticlick's sample size.
