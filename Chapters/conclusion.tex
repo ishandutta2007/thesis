@@ -30,7 +30,13 @@ With much background research on machine fingerprinting available, and the basic
 The add-on could be improved to better disable canvas fingerprinting so that usability is not affected in cases where the website only needs to draw to the \texttt{<canvas>} rather than affecting it regardless of how it is being used.
 The mitigation of audio fingerprinting could also be developed and integrated into the add-on, along with research into how to effectively use the font whitelist that Firefox provides to combat fingerprinting.
 
+It would be of great benefit when defending against fingerprinting to know roughly how many bits of identifying information per $N$ users the fingerprinter needs.
+As discussed in Chapter 6, for $N$ users, a minimum of $\log{2}N$ bits of identifying information are required to be able to uniquely identify every user, providing that each of their browsers is unique.
+In practice, this figure will be higher due to the likelihood of two browsers in a large sample being unique.
+An in-depth study would be required to work out the probability of two or more browsers in a sample of $N$ browsers having identical characteristics.
+Using this, one could model how many bits are required per $N$ users with a degree of certainty.
+
 Another possibility for future work is to further research how fingerprinters build their database of users, and the methods available for handling small changes to the fingerprint.
-This could be done by using existing fingerprinting libraries to fingerprint a large number of users and to investigate the best methods for organising the dataset.
-Armed with this information, someone trying to mitigate fingerprinting could more easily develop a stronger defence against it, using the research as a basis for their application.
+This could be done by using existing fingerprinting libraries to fingerprint a large number of browsers, and to investigate the best methods for organising the dataset as well as the options available for dealing with minor changes and differences in fingerprints.
+Armed with this information, someone trying to mitigate fingerprinting could more easily develop a strong defence against it, using the research as a basis for their application.
 
