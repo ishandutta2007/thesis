@@ -38,12 +38,12 @@ Once again changing these have consequences for the usability of many websites.
 \section{Navigator Properties}
 
 Similarly to the HTTP request headers, many of the \texttt{window.navigator} properties can be inferred using JavaScript such as \texttt{appName}, \texttt{appVersion}, \texttt{platform}.
-Due to this, the spoofing of these \texttt{navigator} properties is not done in the final version of the add-on.
-After much investigation, it does not seem possible to convincingly disguise a browser as different browser due to the significant number of differences between every browser API as well as there being a number of values and functions that can not be spoofed, such as the floating point difference in math functions discussed in chapter 3.
-Though simple fingerprinters may be tricked easily, due to the dynamic nature of web security simpler tricks such as spoofing \texttt{navigator} properties can be expected to not work for very long before websites improve the fingerprinting scripts they use, once again making it more difficult to mitigate.
+Due to this, these \texttt{navigator} properties are not spoofed in the final version of the add-on.
+After much investigation, it does not seem possible to convincingly disguise a browser as a different browser due to the significant number of differences between every browser API as well as there being a number of values and functions that can not be spoofed, such as the floating point difference in math functions discussed in Chapter 3.
+Though simple fingerprinters may be tricked easily, due to the dynamic nature of web security, simpler tricks such as spoofing \texttt{navigator} properties can not be expected to work for very long before websites improve the fingerprinting scripts they use, once again making it more difficult to mitigate.
 
 The only \texttt{navigator} property that seems promising to spoof is the \texttt{plugins} property.
-The add-on successfully hides all installed plugins apart from Flash due to it being set to `click-to-play', however on \url{browserprint.info}'s fingerprint checker, hiding the plugins installed on the test computer greatly increased the uniqueness score of the browser.
+The add-on successfully hides all installed plugins apart from Flash due to it being set to `click-to-play', however on \url{browserprint.info}'s fingerprint checker, hiding the plugins installed on the test computer greatly increased how unique the browser was.
 Although this is not an entirely positive result, it does show promise as the list of plugins could potentially be spoofed to return some of the most commonly installed plugins.
 More research is required to determine what these commonly installed plugins are across different browsers and browser versions, as this was too large an undertaking for the scope of the project.
 
@@ -52,11 +52,11 @@ More research is required to determine what these commonly installed plugins are
 Changing the whitelist of system fonts was an easy method of changing what system fonts fingerprinters detect.
 However, it was difficult to ascertain a set of fonts that reduced the browser's uniqueness score as the information for what fonts are most common for different operating systems is not readily available, and similarly to the list of plugins, would require a significant amount of further research.
 There is potential for the add-on to developed further and to use randomisation solely for the font list as it is one of the biggest sources of entropy in a browser fingerprint, and is a characteristic that one would not expect to have significant changes very often.
-The ease of altering the whitelist is hugely beneficial to mitigating fingerprinting, and is a good sign that browser developers are actively taking steps to combat fingerprinting.
+The ease of altering the whitelist is hugely beneficial to mitigating fingerprinting, and is a good sign that browser developers are beginning to take steps towards combatting fingerprinting.
 
 \section{Flash}
 
-As shown in~\ref{tab:results}, disabling Flash yielded a huge decrease in uniqueness for the browser.
+As shown in Table~\ref{tab:results}, disabling Flash yielded a huge decrease in uniqueness for the browser.
 It is important to note that the characteristics were not all orthogonal to others gained by fingerprinting.
 For example, the browser's platform can also be gained through the \texttt{window.navigator}, albeit with less information.
 It is still clear to see that Flash is one of the most important (and simplest) steps to mitigating fingerprinting, usability issues aside.
@@ -64,10 +64,10 @@ It is still clear to see that Flash is one of the most important (and simplest) 
 \section{Canvas Fingerprinting}
 
 Blocking canvas fingerprinting resulted in a value for the fingerprint that was roughly 4,000\% more common than when a canvas fingerprint could be retrieved.
-This seems like a huge improvement in how common the browser appears, though it is very difficult to determine if this value being shared with roughly 2.7\% of other browsers is enough of an improvement to make a significant difference in the uniqueness of the entire fingerprint.
+This seems like a huge improvement in how common the browser appears, though it is very difficult to determine if this value being shared with roughly 2.7\% of other browsers is enough of an improvement to make a significant difference in the uniqueness of the fingerprint as a whole.
 To answer this, one would require access to a broad sample of user data to know for sure just how significant an improvement this is.
 The \url{browserprint.info} fingerprinting test has a sample size of roughly 32,000 users \citep{browserprint}, many of whom can be assumed to be somewhat privacy aware.
 One can assume that the 2.7\% figure would be inflated on \url{browserprint.info} when compared to fingerprints retrieved from an average website, when considering that with a higher proportion of privacy aware users, there would be a higher proportion of users that would have JavaScript disabled.
-For these users, the fingerprinter would also not be able to retrieve a canvas fingerprint.
-Viewed in isolation, the decrease in uniqueness with the canvas fingerpringing defence is a good result, but once again the question of `Is it enough of an improvement to make a difference?' is asked and the answer is not at all obvious.
+For these users, the fingerprinter would not be able to retrieve a canvas fingerprint.
+Viewed in isolation, the decrease in uniqueness with the canvas fingerpringing defence is a good result, but once again the question of `Is it enough of an improvement to make a difference?', is asked and the answer is not at all obvious.
 

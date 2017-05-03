@@ -9,25 +9,25 @@ Perhaps with a much larger sample size of fingerprints, the developed product co
 Along with the positive outcome of mitigating some of the fingerprinting methods, the project also functioned as a great learning experience and gave an enormous insight into how effective browser fingerprinting is for identifying users and just how difficult a job it is to fight it as a regular browser user.
 
 There are a number of things that could be done better if this project or a similar one was attempted again.
-The first and probably most important improvement would be to spend a lot more time researching the effectiveness of fingerprinters.
+The first, and probably most important improvement would be to spend a lot more time researching the effectiveness of fingerprinters.
 Much development time was spent trying to mitigate elements of fingerprinting that only trick simple fingerprinters, such as user agent spoofing and altering \texttt{window.navigator} properties.
 This time could have been invested elsewhere if we had a greater understanding of how powerful current fingerprinting algorithms are.
 Improvements could have also been made to the canvas fingerprinting prevention algorithm of the add-on.
 It was difficult to disable only the canvas functions that fingerprinters require without impairing the functions that allow the \texttt{<canvas>} elements to be written to.
-This resulted in a loss in usability when using the add-on, as sites which use \texttt{<canvas>} elements do not render as the should when the add-on is activated.
+This resulted in a loss in usability when using the add-on, as sites which use \texttt{<canvas>} elements do not render as they should when the add-on is activated.
 The mitigation of audio fingerprinting is a similar albeit more difficult method to prevent due to the greater number of functions to block, and if implemented successfully could have improved the results of the project.
 
 Taking into account the difficulty level in mitigating fingerprinting at the user/add-on level, we believe that the responsibility to mitigate fingerprinting must fall upon browser developers rather than the users themselves.
 Changes in what browsers reveal to visited websites are required, which has been shown to be a very complicated process for the user to do.
 Building more fingerprinting protection should be a priority of browser developers.
-With much lower level access to what is being revealed, they should have the ability to limit canvas fingerprinting, audio fingerprinting and font fingerprinting amongst many other elements of fingerprinting.
+With much lower level access to what is being revealed, they should have the ability to limit canvas fingerprinting, audio fingerprinting and font fingerprinting amongst many other sources of information about their users' browsers.
 We suspect that the involvement of browser developers is the only feasible approach to preventing fingerprinting for the average user, as the strongest methods of using the Tor Browser or disabling JavaScript entirely are simply too much of an investment for most.
 
 \section{Future Work}
 
 The area of machine fingerprinting easily lends itself to further work.
-With background research on machine fingerprinting and the groundwork of an add-on developed, the add-on could be further developed to try to improve it.
-The add-on could be improved to better disable canvas fingerprinting so that usability is not affected in cases where the website only needs to draw to the \texttt{<canvas>} rather than all use cases.
+With much background research on machine fingerprinting available, and the basic elements of a defensive add-on developed, the add-on could be further build upon and improved.
+The add-on could be improved to better disable canvas fingerprinting so that usability is not affected in cases where the website only needs to draw to the \texttt{<canvas>} rather than affecting it regardless of how it is being used.
 The mitigation of audio fingerprinting could also be developed and integrated into the add-on, along with research into how to effectively use the font whitelist that Firefox provides to combat fingerprinting.
 
 Another possibility for future work is to further research how fingerprinters build their database of users, and the methods available for handling small changes to the fingerprint.
