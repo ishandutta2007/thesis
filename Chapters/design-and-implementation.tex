@@ -51,7 +51,7 @@ This is because the differing functionality of various browsers can be queried, 
 By spoofing the value, it makes it more obvious to a complex fingerprinter what the user's identity is, as so few browsers spoof this information.
 For this reason, the final iteration of the add-on does not alter the User Agent header.
 In addition to this, the timezone header is not altered because of problems with usability for sites that depend on accurate timing information.
-These are some of the first problems that were encountered over the course of the project, but it was neither the last time the question ~`Is concealing or spoofing this characteristic doing more harm than good?', was asked, nor was it the last time that balance of usability and privacy had to be considered.
+These are some of the first problems that were encountered over the course of the project, but it was neither the last time the question ~`Is concealing or spoofing this characteristic doing more harm than good?' was asked, nor was it the last time that balance of usability and privacy had to be considered.
 
 \section{\texttt{window.navigator} Properties}
 
@@ -180,7 +180,7 @@ observer.observe(document, {
 \label{lst:canvas-logger}
 \end{figure}
 
-This worked to a degree, although it could not detect canvas elements in within \texttt{<iframe>} HTML elements.
+This worked to a degree, although it could not detect canvas elements within \texttt{<iframe>} HTML elements.
 An iframe is an element which loads in content from another web page either on the same site or from an external website.
 However, this was not realised until later in development.
 
@@ -188,7 +188,7 @@ Once this logging worked, the next step was to try to change the APIs for each o
 To do this, instead of simply printing to console when a canvas was added, the JavaScript method \texttt{Object.defineProperties()} was used to change the functions for each element that the script encountered.
 To begin with, just the \texttt{getContext()} function was blocked, since this prevents writing to and reading from the element.
 This did not work when written in the same way that Figure~\ref{lst:canvas-logger} was written.
-The reason behind this is that add-on content scripts have restricted permissions, and can not directly make changes to JavaScript objects defined by the web page, they can only alter the DOM itself.
+The reason behind this is that add-on content scripts have restricted permissions, and cannot directly make changes to JavaScript objects defined by the web page, they can only alter the DOM itself.
 
 After discovering this, and researching if it is possible to bypass this security feature, an exploit was discovered.
 The security feature can be bypassed by injecting a \texttt{<script>} node to the beginning of the HTML document that contains the webpage.
@@ -255,19 +255,19 @@ document.createElement = function(create) {
 
 This successfully prevents canvas fingerprinting on websites in most cases.
 One case that this does not solve for as mentioned before is for when there is a canvas within an \texttt{<iframe>}.
-This is because the \texttt{MutationObserver} can not access the contents of an iframe that is added to the node that it is monitoring.
+This is because the \texttt{MutationObserver} cannot access the contents of an iframe that is added to the node that it is monitoring.
 For this reason, the app has to find iframes in the same way that it scans for \texttt{<canvas>} elements, but then has to do some processing after it has gathered them.
 After acquiring the list of iframes that are added to the page, each one then needs to be scanned in the same way as the entire page was, so another \texttt{MutationObserver} is attached to the iframe, listening for any changes within.
 The plan was to do much the same method of breaking certain APIs of the \texttt{<canvas>} elements within the iframe.
 This method unfortunately does not work.
-If the iframe is loaded in from a different domain than the one that owns the parent webpage, then the parent webpage (and by consequence the script that is injected by the add-on) can not access the contents of the iframe.
+If the iframe is loaded in from a different domain than the one that owns the parent webpage, then the parent webpage (and by consequence the script that is injected by the add-on) cannot access the contents of the iframe.
 This is due to the same-origin policy of web browsers \citep{same-origin}.
 
-The only solution that could be reached at the add-on level was too remove iframes from pages entirely.
+The only solution that could be reached at the add-on level was to remove iframes from pages entirely.
 Needless to say this is not a usability-friendly solution for mitigating fingerprinting, as iframes are used a great deal on the web.
 This was implemented similarly to the method of finding canvas nodes, except instead of merely altering the APIs of the JavaScript objects, then entire object is deleted.
 After visiting a few websites it was clear that this was not a very good solution and is not feasible as a long-term method of defence.
-\url{panopticlick.eff.org}, another online fingerprint checker can not successfully take a fingerprint when the add-on is activated with the iframe deletion code in effect.
+\url{panopticlick.eff.org}, another online fingerprint checker cannot successfully take a fingerprint when the add-on is activated with the iframe deletion code in effect.
 Although it may be seen as a positive thing that a fingerprinter does not work, this is not the case for other comparable fingerprinting websites.
 Many other sites simply do not function with the deletion of all of the iframe content on their pages.
 This is yet another reason why preventing fingerprinting at the add-on level is difficult.

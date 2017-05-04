@@ -37,20 +37,20 @@ The remainder of this chapter will discuss the various parts of the browser that
 
 \section{HTTP Request Headers}
 
-Although in an early stage of development, a few of the HTTP request headers were edited, after further research it was clear that it was not effective for more complex fingerprinters.
+Although in an early stage of development, a few of the HTTP request headers were edited but after further research it was clear that it was not effective for more complex fingerprinters.
 The spoofing of the User Agent does not work because fingerprinters are able to query various JavaScript functions and objects available across different browsers and through process of elimination deduce what browser, browser version and platform are being used.
 An example of this is querying for the \texttt{ActiveXObject} in the \texttt{window} object, which is available only on the Internet Explorer web browser \citep{activeX}.
 The only defence against this is to disable JavaScript altogether.
-Unfortunately, this has a big impact on usability due to approximately 94.5\% of all websites use JavaScript \citep{w3-javascript}.
+Unfortunately, this has a big impact on usability due to the fact that approximately 94.5\% of all websites use JavaScript \citep{w3-javascript}.
 The other headers that could be altered are the HTTP\_ACCEPT headers, particularly the language header, and the date header.
-Once again changing these have consequences for the usability of many websites.
+Once again, changing these have consequences for the usability of many websites.
 
 \section{Navigator Properties}
 
 Similarly to the HTTP request headers, many of the \texttt{window.navigator} properties can be inferred using JavaScript such as \texttt{appName}, \texttt{appVersion}, \texttt{platform}.
 Due to this, these \texttt{navigator} properties are not spoofed in the final version of the add-on.
-After much investigation, it does not seem possible to convincingly disguise a browser as a different browser due to the significant number of differences between every browser API as well as there being a number of values and functions that can not be spoofed, such as the floating point difference in math functions discussed in Chapter 3.
-Though simple fingerprinters may be tricked easily, due to the dynamic nature of web security, simpler tricks such as spoofing \texttt{navigator} properties can not be expected to work for very long before websites improve the fingerprinting scripts they use, once again making it more difficult to mitigate.
+After much investigation, it does not seem possible to convincingly disguise a browser as a different browser due to the significant number of differences between every browser API as well as there being a number of values and functions that cannot be spoofed, such as the floating point difference in math functions discussed in Chapter 3.
+Though simple fingerprinters may be tricked easily, due to the dynamic nature of web security, simpler tricks such as spoofing \texttt{navigator} properties cannot be expected to work for very long before websites improve the fingerprinting scripts they use, once again making it more difficult to mitigate.
 
 The only \texttt{navigator} property that seems promising to spoof is the \texttt{plugins} property.
 The add-on successfully hides all installed plugins apart from Flash due to it being set to `click-to-play', however on \url{browserprint.info}'s fingerprint checker, hiding the plugins installed on the test computer greatly increased how unique the browser was.
@@ -62,10 +62,10 @@ More research is required to determine what these commonly installed plugins are
 
 Changing the whitelist of system fonts was an easy method of changing what system fonts fingerprinters detect.
 However, it was difficult to ascertain a set of fonts that reduced the browser's uniqueness score as the information for what fonts are most common for different operating systems is not readily available, and similarly to the list of plugins, would require a significant amount of further research.
-After changing the whitelist to contain a subset of the fonts that could be gleamed by the fingerprinter through JavaScript, the percentage of users with the same set of fonts decreased from 0.08\% to 0.03\%.
+After changing the whitelist to contain a subset of the fonts that could be gleaned by the fingerprinter through JavaScript, the percentage of users with the same set of fonts decreased from 0.08\% to 0.03\%.
 After experimenting with this for some time it was clear that the solution was not one that could be reached easily through trial and error.
 
-There is potential for the add-on to developed further and to use randomisation solely for the font list as it is one of the biggest sources of entropy in a browser fingerprint, and is a characteristic that one would not expect to have significant changes very often.
+There is potential for the add-on to be developed further and to use randomisation solely for the font list as it is one of the biggest sources of entropy in a browser fingerprint, and is a characteristic that one would not expect to have significant changes very often.
 The ease of altering the whitelist is hugely beneficial to mitigating fingerprinting, and is a good sign that browser developers are beginning to take steps towards combatting fingerprinting.
 
 \section{Flash}
@@ -83,5 +83,5 @@ To answer this, one would require access to a broad sample of user data to know 
 The \url{browserprint.info} fingerprinting test has a sample size of roughly 32,000 users \citep{browserprint}, many of whom can be assumed to be somewhat privacy aware.
 One can assume that the 2.7\% figure would be inflated on \url{browserprint.info} when compared to fingerprints retrieved from an average website, when considering that with a higher proportion of privacy aware users, there would be a higher proportion of users that would have JavaScript disabled.
 For these users, the fingerprinter would not be able to retrieve a canvas fingerprint.
-Viewed in isolation, the decrease in uniqueness with the canvas fingerpringing defence is a good result, but once again the question of `Is it enough of an improvement to make a difference?', is asked and the answer is not at all obvious.
+Viewed in isolation, the decrease in uniqueness with the canvas fingerpringing defence is a good result, but once again the question of `Is it enough of an improvement to make a difference?' is asked and the answer is not at all obvious.
 

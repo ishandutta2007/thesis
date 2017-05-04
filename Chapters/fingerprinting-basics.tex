@@ -38,20 +38,20 @@ This exposes both the timezone that the user is located in, and the time differe
 There is one last header that is commonly used in fingerprinting, the DNT or `Do Not Track' header.
 This header is a binary value which indicates to a website if the user explicitly does not want to be tracked.
 
-All of this information is sent by default, exposing a huge amount of data about the user's browser already without any effort from the website itself.
+All of this information is sent by default, exposing a huge amount of data about the user's browser already, without any effort from the website itself.
 Furthermore, much of this data is important for user experience on many websites.
-An example of this would be websites with downloads available for multiple operating systems checking the User Agent string to offer a specific download depending on the visitor's operating system.
+An example of this would be websites with downloads available for multiple operating systems checking the User Agent string to offer a specific download, depending on the visitor's operating system.
 This means that spoofing the data to protect the user's privacy comes with a common tradeoff, user experience vs.\ privacy.
 
 \section{Actively Gained Information}
 
-As well as the information that's sent to websites by the browser by default, there's also a huge amount of information that can be gleamed through client-side execution of JavaScript, Flash and Java.
+As well as the information that is sent to websites by the browser by default, there is also a huge amount of information that can be gleaned through client-side execution of JavaScript, Flash and Java.
 One of the most reliable methods of mitigating fingerprinting is simply disabling all three of these, however most popular websites use JavaScript in some capacity and will either break the website entirely or result in a poor user experience \citep{disable-js}.
 
 \subsection{Information Gained Using JavaScript}
 
 JavaScript exposes a huge amount of information to fingerprinters.
-A lot of the information is stored in the \texttt{window.navigator} JavaScript object which is available to any website that a user visits with JavaScript enabled.
+A lot of the information is stored in the \texttt{window.navigator} JavaScript object which is available to any website that a user (with JavaScript enabled) visits.
 This information is explained in Table~\ref{tab:navigator-props}.
 
 \begin{table}[h]
@@ -75,15 +75,13 @@ This information is explained in Table~\ref{tab:navigator-props}.
 
 The most significant of these properties in terms of bits of entropy exposed is the \texttt{plugins} property, since it varies quite significantly from browser to browser.
 It returns the list of plugins installed, usually paired with the version.
-However, this list is not fully enumerable, it can not be read as one would expect.
+However, this list is not fully enumerable as it cannot be read as one would expect.
 To check if a user has a plugin installed, the fingerprinter must query the list with a specific plugin.
 In addition to the characteristics available through the \texttt{window.navigator}, there are other objects with information available in them, such as the \texttt{screen} object which contains the height and width of the user's display.
-
-Whereas these characteristics are convenient to access with JavaScript and readily supplied by the browser, there is also a huge amount of additional information which can be retrieved.
-The first of which is detecting what fonts the user has installed.
+Whereas these characteristics are convenient to access with JavaScript and readily supplied by the browser, there is also a huge amount of additional information which can be retrieved, the first of which is detecting what fonts the user has installed.
 
 Browser JavaScript APIs do not supply any functions for retrieving the full list of fonts that the user has installed.
-There is however a method that allows the visited website to detect what fonts are installed by querying a large number of fonts one-by-one.
+There is, however, a method that allows the visited website to detect what fonts are installed by querying a large number of fonts one-by-one.
 The method works by creating a HTML \texttt{<span>} element and setting the font to a font that is known to be installed.
 After this is done, JavaScript is used to alter the CSS of the \texttt{<span>} element and change the text's font.
 The size of the \texttt{<span>} element will be different before and after the change if the probed font is installed, illustrated in Figure~\ref{fig:font-change}.
